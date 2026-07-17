@@ -6,7 +6,7 @@ import { RevealOnScroll } from "@/components/shared/reveal-on-scroll";
 import { ContactForm } from "@/components/forms/contact-form";
 import { LinkedInIcon, XIcon, FacebookIcon, InstagramIcon, GitHubIcon } from "@/components/shared/social-icons";
 import { siteConfig } from "@/data/site";
-import { buildMetadata, breadcrumbJsonLd } from "@/lib/seo";
+import { buildMetadata, breadcrumbJsonLd, contactPageJsonLd } from "@/lib/seo";
 import { JsonLd } from "@/components/shared/json-ld";
 
 export const metadata: Metadata = buildMetadata({
@@ -14,6 +14,13 @@ export const metadata: Metadata = buildMetadata({
   description:
     "Get in touch with Coorbitz — reach our Chicago headquarters or Mehsana development office, or send us a project inquiry.",
   path: "/contact",
+  keywords: [
+    "IT company Chicago Illinois",
+    "software development company Chicago",
+    "AI company Mehsana Gujarat",
+    "contact IT services company",
+    "custom software development company",
+  ],
 });
 
 const socialLinks = [
@@ -27,7 +34,12 @@ const socialLinks = [
 export default function ContactPage() {
   return (
     <>
-      <JsonLd data={breadcrumbJsonLd([{ name: "Home", path: "/" }, { name: "Contact", path: "/contact" }])} />
+      <JsonLd
+        data={[
+          breadcrumbJsonLd([{ name: "Home", path: "/" }, { name: "Contact", path: "/contact" }]),
+          contactPageJsonLd(),
+        ]}
+      />
       <section className="py-16 text-center sm:py-20">
         <Container>
           <RevealOnScroll>
@@ -63,7 +75,8 @@ export default function ContactPage() {
                       {location.label}
                     </span>
                   </div>
-                  <p className="mt-2 font-medium">{location.city}, {location.country}</p>
+                  <p className="mt-2 font-semibold">{location.company}</p>
+                  <p className="text-sm text-muted-foreground">{location.city}, {location.country}</p>
                   {location.addressLines.map((line) => (
                     <p key={line} className="text-sm text-muted-foreground">{line}</p>
                   ))}

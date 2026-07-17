@@ -15,6 +15,14 @@ export const metadata: Metadata = buildMetadata({
   description:
     "Coorbitz delivers software and AI solutions across 15 industries — healthcare, finance, manufacturing, retail, e-commerce, logistics, and more.",
   path: "/industries",
+  keywords: [
+    "AI integration company",
+    "business automation company",
+    "software development company",
+    "industries served",
+    "healthcare software development",
+    "fintech software development",
+  ],
 });
 
 export default function IndustriesPage() {

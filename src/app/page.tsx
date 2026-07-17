@@ -10,6 +10,7 @@ import { TestimonialsCarousel } from "@/components/sections/testimonials-carouse
 import { FaqSection } from "@/components/sections/faq-section";
 import { InsightsPreview } from "@/components/sections/insights-preview";
 import { ContactCta } from "@/components/sections/contact-cta";
+import { ParentNetworkStrip } from "@/components/sections/parent-network-strip";
 import { buildMetadata } from "@/lib/seo";
 import { siteConfig } from "@/data/site";
 
@@ -17,6 +18,20 @@ export const metadata: Metadata = buildMetadata({
   title: `${siteConfig.name} — ${siteConfig.tagline}`,
   description: siteConfig.description,
   path: "/",
+  keywords: [
+    "IT company",
+    "AI company",
+    "software development company",
+    "web development company",
+    "AI integration company",
+    "business automation company",
+    "custom software development",
+    "AI chatbot development",
+    "data analytics company",
+    "IT company Chicago Illinois",
+    "software development company Mehsana Gujarat",
+    "Coorbitz",
+  ],
 });
 
 export default function HomePage() {
@@ -33,6 +48,7 @@ export default function HomePage() {
       <FaqSection />
       <InsightsPreview />
       <ContactCta />
+      <ParentNetworkStrip />
     </>
   );
 }

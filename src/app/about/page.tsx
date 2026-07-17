@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
-import { Target, Eye, Heart, MapPin } from "lucide-react";
+import Link from "next/link";
+import { Target, Eye, Heart, MapPin, Building2, Server, ChevronDown, FileText, ShieldCheck } from "lucide-react";
 import { Container } from "@/components/shared/container";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { RevealOnScroll } from "@/components/shared/reveal-on-scroll";
 import { GradientBlob } from "@/components/shared/gradient-blob";
+import { OrbitMark } from "@/components/shared/logo";
 import { techStack } from "@/data/tech-stack";
 import { coreValues } from "@/data/team";
 import { siteConfig } from "@/data/site";
@@ -15,6 +17,13 @@ export const metadata: Metadata = buildMetadata({
   description:
     "Learn about Coorbitz's story, mission, and the technology expertise behind our AI and software delivery.",
   path: "/about",
+  keywords: [
+    "IT company Chicago Illinois",
+    "software development company Mehsana Gujarat",
+    "AI company",
+    "about Coorbitz",
+    "Coordinatez",
+  ],
 });
 
 export default function AboutPage() {
@@ -109,10 +118,72 @@ export default function AboutPage() {
         </Container>
       </section>
 
+      {/* Global Presence — company structure */}
+      <section className="section-y">
+        <Container>
+          <SectionHeading
+            eyebrow="Company Structure"
+            title="Our Global Presence"
+            description="This global structure allows Coorbitz to deliver reliable, scalable, and cost-effective technology solutions worldwide."
+          />
+          <div className="mx-auto mt-16 flex max-w-xl flex-col items-center">
+            <RevealOnScroll className="flex w-full flex-col items-center rounded-2xl border bg-card p-8 text-center shadow-sm">
+              <div className="flex size-14 items-center justify-center rounded-2xl bg-gradient-brand text-white shadow-lg">
+                <Building2 className="size-6" />
+              </div>
+              <p className="mt-4 text-xs font-semibold uppercase tracking-wider text-primary">
+                Parent Company
+              </p>
+              <h3 className="mt-1 text-xl font-bold">{siteConfig.parentCompany.name}</h3>
+              <p className="mt-1 text-sm text-muted-foreground">
+                Global Headquarters — {siteConfig.locations.headquarters.city},{" "}
+                {siteConfig.locations.headquarters.country}
+              </p>
+            </RevealOnScroll>
+
+            <ChevronDown className="my-2 size-6 shrink-0 text-primary/50" aria-hidden />
+
+            <RevealOnScroll
+              delay={0.08}
+              className="flex w-full flex-col items-center rounded-2xl border bg-card p-8 text-center shadow-sm"
+            >
+              <div className="flex size-14 items-center justify-center rounded-2xl bg-gradient-brand">
+                <OrbitMark className="size-7" />
+              </div>
+              <p className="mt-4 text-xs font-semibold uppercase tracking-wider text-primary">
+                Technology Brand
+              </p>
+              <h3 className="mt-1 text-xl font-bold">{siteConfig.name}</h3>
+              <p className="mt-1 text-sm text-muted-foreground">
+                {siteConfig.locations.development.divisionName}
+              </p>
+            </RevealOnScroll>
+
+            <ChevronDown className="my-2 size-6 shrink-0 text-primary/50" aria-hidden />
+
+            <RevealOnScroll
+              delay={0.16}
+              className="flex w-full flex-col items-center rounded-2xl border bg-card p-8 text-center shadow-sm"
+            >
+              <div className="flex size-14 items-center justify-center rounded-2xl bg-gradient-brand text-white shadow-lg">
+                <Server className="size-6" />
+              </div>
+              <p className="mt-4 text-xs font-semibold uppercase tracking-wider text-primary">
+                Development &amp; Operations
+              </p>
+              <h3 className="mt-1 text-xl font-bold">{siteConfig.locations.development.city}</h3>
+              <p className="mt-1 text-sm text-muted-foreground">
+                {siteConfig.locations.development.country}
+              </p>
+            </RevealOnScroll>
+          </div>
+        </Container>
+      </section>
+
       {/* Office Locations */}
       <section className="section-y bg-muted/30">
         <Container>
-          <SectionHeading eyebrow="Global Presence" title="Our Offices" />
+          <SectionHeading eyebrow="Visit Us" title="Our Offices" />
           <div className="mt-16 grid gap-8 lg:grid-cols-2">
             {Object.values(siteConfig.locations).map((location, index) => (
               <RevealOnScroll key={location.label} delay={index * 0.1}>
@@ -131,7 +202,8 @@ export default function AboutPage() {
                         {location.label}
                       </span>
                     </div>
-                    <p className="mt-2 font-medium">{location.city}, {location.country}</p>
+                    <p className="mt-2 font-semibold">{location.company}</p>
+                    <p className="text-sm text-muted-foreground">{location.city}, {location.country}</p>
                     {location.addressLines.map((line) => (
                       <p key={line} className="text-sm text-muted-foreground">{line}</p>
                     ))}
@@ -172,6 +244,38 @@ export default function AboutPage() {
               <li>• Quarterly hackathons exploring new AI tooling</li>
               <li>• Transparent, feedback-driven engineering culture</li>
             </ul>
+          </RevealOnScroll>
+        </Container>
+      </section>
+
+      {/* Case Studies & Certifications */}
+      <section className="section-y bg-muted/30">
+        <Container className="grid gap-6 lg:grid-cols-2">
+          <RevealOnScroll className="rounded-2xl border bg-card p-8 shadow-sm">
+            <div className="flex size-12 items-center justify-center rounded-xl bg-gradient-brand text-white">
+              <FileText className="size-6" />
+            </div>
+            <h3 className="mt-5 text-xl font-semibold">Case Studies</h3>
+            <p className="mt-3 text-muted-foreground">
+              Detailed case studies are coming soon. In the meantime,{" "}
+              <Link href="/contact" className="text-primary underline underline-offset-4">
+                get in touch
+              </Link>{" "}
+              and we&apos;ll gladly share references and examples from past projects.
+            </p>
+          </RevealOnScroll>
+          <RevealOnScroll delay={0.1} className="rounded-2xl border bg-card p-8 shadow-sm">
+            <div className="flex size-12 items-center justify-center rounded-xl bg-gradient-brand text-white">
+              <ShieldCheck className="size-6" />
+            </div>
+            <h3 className="mt-5 text-xl font-semibold">Certifications &amp; Compliance</h3>
+            <p className="mt-3 text-muted-foreground">
+              We&apos;re expanding our formal certifications as we grow.{" "}
+              <Link href="/contact" className="text-primary underline underline-offset-4">
+                Ask us
+              </Link>{" "}
+              about our current security and quality practices.
+            </p>
           </RevealOnScroll>
         </Container>
       </section>

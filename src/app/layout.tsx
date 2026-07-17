@@ -10,7 +10,8 @@ import { BackToTop } from "@/components/layout/back-to-top";
 import { WhatsAppButton } from "@/components/layout/whatsapp-button";
 import { CookieConsent } from "@/components/layout/cookie-consent";
 import { JsonLd } from "@/components/shared/json-ld";
-import { buildMetadata, organizationJsonLd, localBusinessJsonLd } from "@/lib/seo";
+import { AnalyticsScripts } from "@/components/shared/analytics-scripts";
+import { buildMetadata, organizationJsonLd, localBusinessJsonLd, websiteJsonLd } from "@/lib/seo";
 import { siteConfig } from "@/data/site";
 
 const geistSans = Geist({
@@ -30,6 +31,13 @@ export const metadata: Metadata = {
     path: "/",
   }),
   metadataBase: new URL(siteConfig.url),
+  // Search engine ownership verification — only rendered once a real code is supplied.
+  verification: {
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || undefined,
+    other: process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION
+      ? { "msvalidate.01": process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION }
+      : undefined,
+  },
 };
 
 export default function RootLayout({
@@ -44,7 +52,8 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col">
-        <JsonLd data={[organizationJsonLd(), ...localBusinessJsonLd()]} />
+        <JsonLd data={[organizationJsonLd(), websiteJsonLd(), ...localBusinessJsonLd()]} />
+        <AnalyticsScripts />
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <TooltipProvider delayDuration={150}>
             <Navbar />
