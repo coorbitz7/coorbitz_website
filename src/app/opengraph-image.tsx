@@ -30,12 +30,14 @@ export default function OpengraphImage() {
             height: 96,
             borderRadius: 24,
             background: "linear-gradient(135deg, #2563EB 0%, #7C3AED 100%)",
-            fontSize: 52,
-            fontWeight: 700,
             marginBottom: 32,
           }}
         >
-          C
+          <svg width="64" height="64" viewBox="0 0 100 100">
+            <ellipse cx="50" cy="50" rx="34" ry="16" transform="rotate(-20 50 50)" fill="none" stroke="#ffffff" strokeWidth="8" />
+            <circle cx="81.95" cy="38.37" r="13" fill="#ffffff" />
+            <circle cx="18.05" cy="61.63" r="13" fill="#ffffff" />
+          </svg>
         </div>
         <div style={{ display: "flex", fontSize: 64, fontWeight: 700, letterSpacing: -1 }}>
           {siteConfig.name}

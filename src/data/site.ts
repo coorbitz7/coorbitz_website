@@ -29,9 +29,17 @@ export const siteConfig = {
     us: "+1 (312) 555-0176",
     india: "+91 79905 12345",
   },
+  // Coorbitz is the dedicated IT Services & AI Solutions brand operating under Coordinatez.
+  parentCompany: {
+    name: "Coordinatez",
+    relationshipStatement: "Coorbitz is a technology brand of Coordinatez.",
+    description:
+      "Coorbitz is the dedicated IT Services & AI Solutions brand operating under Coordinatez, backed by its global presence and enterprise-grade operating standards.",
+  },
   locations: {
     headquarters: {
-      label: "Headquarters",
+      label: "Global Headquarters",
+      company: "Coordinatez",
       city: "Chicago, Illinois",
       country: "United States",
       addressLines: ["71 S Wacker Dr, Suite 2400", "Chicago, IL 60606, USA"],
@@ -39,7 +47,9 @@ export const siteConfig = {
         "https://www.google.com/maps?q=71+S+Wacker+Dr,+Chicago,+IL+60606&output=embed",
     },
     development: {
-      label: "Development Office",
+      label: "Development Center",
+      company: "Coorbitz",
+      divisionName: "Technology & AI Solutions Division",
       city: "Mehsana, Gujarat",
       country: "India",
       addressLines: ["3rd Floor, Orbit Business Hub", "Mehsana, Gujarat 384002, India"],
@@ -60,6 +70,11 @@ export const siteConfig = {
     github: "https://github.com/coorbitz",
   },
   whatsappNumber: "13125550176",
+  // The Contact page form submits directly to this Formspree endpoint client-side —
+  // Formspree delivers each submission to the email configured on the Formspree form itself.
+  formspree: {
+    contact: process.env.NEXT_PUBLIC_FORMSPREE_CONTACT_ENDPOINT || "https://formspree.io/f/xpqvpkol",
+  },
 } as const;
 
 export type SiteConfig = typeof siteConfig;

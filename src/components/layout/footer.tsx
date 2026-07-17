@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Mail, Phone, MapPin } from "lucide-react";
 import { Container } from "@/components/shared/container";
+import { Logo } from "@/components/shared/logo";
 import { NewsletterForm } from "@/components/layout/newsletter-form";
 import { LinkedInIcon, XIcon, FacebookIcon, InstagramIcon, GitHubIcon } from "@/components/shared/social-icons";
 import { siteConfig } from "@/data/site";
@@ -40,11 +41,8 @@ export function Footer() {
       <Container className="section-y">
         <div className="grid gap-12 lg:grid-cols-[1.4fr_1fr_1fr_1fr_1.2fr]">
           <div>
-            <Link href="/" className="flex items-center gap-2 text-xl font-bold">
-              <span className="flex size-9 items-center justify-center rounded-xl bg-gradient-brand text-white">
-                C
-              </span>
-              Coorbitz
+            <Link href="/" aria-label="Coorbitz home">
+              <Logo />
             </Link>
             <p className="mt-4 max-w-xs text-sm text-muted-foreground">{siteConfig.tagline}</p>
             <div className="mt-6 flex gap-3">
@@ -78,11 +76,21 @@ export function Footer() {
             <ul className="mt-6 space-y-3 text-sm text-muted-foreground">
               <li className="flex items-start gap-2">
                 <MapPin className="mt-0.5 size-4 shrink-0 text-primary" />
-                {siteConfig.locations.development.city}
+                <span>
+                  <span className="block text-xs font-medium text-foreground/60">
+                    {siteConfig.locations.development.label}
+                  </span>
+                  {siteConfig.locations.development.city}, {siteConfig.locations.development.country}
+                </span>
               </li>
               <li className="flex items-start gap-2">
                 <MapPin className="mt-0.5 size-4 shrink-0 text-primary" />
-                {siteConfig.locations.headquarters.city}
+                <span>
+                  <span className="block text-xs font-medium text-foreground/60">
+                    {siteConfig.locations.headquarters.label}
+                  </span>
+                  {siteConfig.locations.headquarters.city}, {siteConfig.locations.headquarters.country}
+                </span>
               </li>
               <li className="flex items-center gap-2">
                 <Phone className="size-4 shrink-0 text-primary" />
@@ -100,7 +108,13 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t pt-8 sm:flex-row">
+        <div className="mt-12 border-t pt-6 text-center sm:text-left">
+          <p className="text-xs text-muted-foreground">
+            {siteConfig.parentCompany.relationshipStatement}
+          </p>
+        </div>
+
+        <div className="mt-6 flex flex-col items-center justify-between gap-4 sm:flex-row">
           <p className="text-sm text-muted-foreground">
             © {new Date().getFullYear()} {siteConfig.name}. All rights reserved.
           </p>

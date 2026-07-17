@@ -15,6 +15,7 @@ import {
   SheetClose,
 } from "@/components/ui/sheet";
 import { Container } from "@/components/shared/container";
+import { Logo } from "@/components/shared/logo";
 import { ThemeToggle } from "@/components/layout/theme-toggle";
 import { SearchDialog } from "@/components/layout/search-dialog";
 import { mainNav } from "@/data/nav";
@@ -44,11 +45,8 @@ export function Navbar() {
       )}
     >
       <Container className="flex h-16 items-center justify-between lg:h-20">
-        <Link href="/" className="flex items-center gap-2 text-xl font-bold tracking-tight">
-          <span className="flex size-9 items-center justify-center rounded-xl bg-gradient-brand text-white">
-            C
-          </span>
-          <span>Coorbitz</span>
+        <Link href="/" aria-label="Coorbitz home">
+          <Logo />
         </Link>
 
         <nav className="hidden items-center gap-1 lg:flex">
