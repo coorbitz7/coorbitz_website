@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { careerSchema, failsTimeTrap, validateResumeFile } from "@/lib/validations";
 import { sendCareerNotification, sendCareerThankYou } from "@/lib/email";
 import { getClientKey, isRateLimited } from "@/lib/rate-limit";
+import { verifyTurnstileToken } from "@/lib/turnstile";
 
 export async function POST(request: Request) {
   if (isRateLimited(`careers:${getClientKey(request)}`)) {
@@ -39,6 +40,17 @@ export async function POST(request: Request) {
   // Honeypot filled in, or submitted implausibly fast — silently accept to not tip off the bot.
   if (data.website || failsTimeTrap(formRenderedAt)) {
     return NextResponse.json({ ok: true });
+  }
+
+  const turnstileValid = await verifyTurnstileToken(
+    formData.get("cf-turnstile-response")?.toString() ?? null,
+    getClientKey(request)
+  );
+  if (!turnstileValid) {
+    return NextResponse.json(
+      { ok: false, message: "Verification failed. Please refresh the page and try again." },
+      { status: 400 }
+    );
   }
 
   const resume = formData.get("resume");

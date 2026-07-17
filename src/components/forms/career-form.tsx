@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { motion, AnimatePresence } from "framer-motion";
-import { Loader2, CheckCircle2, Upload, FileText } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
+import { Loader2, Upload, FileText } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -22,6 +22,10 @@ import {
   FieldError,
   FieldGroup,
 } from "@/components/ui/field";
+import { TurnstileWidget } from "@/components/shared/turnstile-widget";
+import { HoneypotField } from "@/components/forms/honeypot-field";
+import { FormSuccessCard } from "@/components/forms/form-success-card";
+import { useAntiSpamGuard, turnstileEnabled } from "@/hooks/use-anti-spam-guard";
 import { careerSchema, type CareerFormValues, validateResumeFile } from "@/lib/validations";
 import { jobOpenings } from "@/data/jobs";
 
@@ -31,13 +35,8 @@ export function CareerForm({ defaultPosition }: { defaultPosition?: string }) {
   const [resumeFile, setResumeFile] = useState<File | null>(null);
   const [resumeError, setResumeError] = useState<string | null>(null);
   const [status, setStatus] = useState<"idle" | "loading" | "success">("idle");
-  // Captured post-mount (not during render) so the anti-spam time-trap reflects when the
-  // form actually became interactive, without calling Date.now() from render itself.
-  const formRenderedAtRef = useRef(0);
-
-  useEffect(() => {
-    formRenderedAtRef.current = Date.now();
-  }, []);
+  const { turnstileToken, handleTurnstileVerify, handleTurnstileExpire, formRenderedAtRef } =
+    useAntiSpamGuard();
 
   const {
     register,
@@ -59,6 +58,11 @@ export function CareerForm({ defaultPosition }: { defaultPosition?: string }) {
       setResumeError(fileError);
       return;
     }
+    if (turnstileEnabled && !turnstileToken) {
+      toast.error("Please complete the verification challenge before submitting.");
+      return;
+    }
+
     setResumeError(null);
     setStatus("loading");
 
@@ -66,6 +70,7 @@ export function CareerForm({ defaultPosition }: { defaultPosition?: string }) {
       const formData = new FormData();
       Object.entries(data).forEach(([key, value]) => formData.append(key, String(value ?? "")));
       formData.append("formRenderedAt", String(formRenderedAtRef.current));
+      if (turnstileToken) formData.append("cf-turnstile-response", turnstileToken);
       formData.append("resume", resumeFile as File);
 
       const res = await fetch("/api/careers", { method: "POST", body: formData });
@@ -86,21 +91,12 @@ export function CareerForm({ defaultPosition }: { defaultPosition?: string }) {
 
   if (status === "success") {
     return (
-      <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        className="flex flex-col items-center rounded-2xl border bg-card p-10 text-center shadow-sm"
-      >
-        <CheckCircle2 className="size-14 text-primary" />
-        <h3 className="mt-4 text-xl font-semibold">Application Submitted!</h3>
-        <p className="mt-2 max-w-sm text-muted-foreground">
-          Thanks for applying — our talent team will review your application and reach out if
-          it&apos;s a fit.
-        </p>
-        <Button className="mt-6 rounded-full" onClick={() => setStatus("idle")}>
-          Submit Another Application
-        </Button>
-      </motion.div>
+      <FormSuccessCard
+        title="Application Submitted!"
+        description="Thanks for applying — our talent team will review your application and reach out if it's a fit."
+        buttonLabel="Submit Another Application"
+        onReset={() => setStatus("idle")}
+      />
     );
   }
 
@@ -109,15 +105,7 @@ export function CareerForm({ defaultPosition }: { defaultPosition?: string }) {
     // during render, so onSubmit reading formRenderedAtRef here is safe despite the static lint check.
     // eslint-disable-next-line react-hooks/refs
     <form onSubmit={handleSubmit(onSubmit)} noValidate className="rounded-2xl border bg-card p-6 shadow-sm sm:p-8">
-      {/* Honeypot — hidden from real users, catches naive bots */}
-      <input
-        type="text"
-        tabIndex={-1}
-        autoComplete="off"
-        className="absolute left-[-9999px] h-0 w-0 opacity-0"
-        aria-hidden
-        {...register("website")}
-      />
+      <HoneypotField {...register("website")} />
 
       <FieldGroup>
         <div className="grid gap-5 sm:grid-cols-2">
@@ -195,6 +183,8 @@ export function CareerForm({ defaultPosition }: { defaultPosition?: string }) {
           />
           <FieldError errors={[errors.message]} />
         </Field>
+
+        <TurnstileWidget onVerify={handleTurnstileVerify} onExpire={handleTurnstileExpire} />
 
         <Button type="submit" size="lg" className="rounded-full" disabled={status === "loading"}>
           <AnimatePresence mode="wait" initial={false}>

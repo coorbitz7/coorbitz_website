@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { motion, AnimatePresence } from "framer-motion";
-import { Loader2, CheckCircle2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -18,15 +18,19 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Field, FieldLabel, FieldError, FieldGroup } from "@/components/ui/field";
-import { contactSchema, type ContactFormValues } from "@/lib/validations";
-import { countryOptions, serviceInterestOptions, budgetOptions } from "@/lib/form-options";
+import { TurnstileWidget } from "@/components/shared/turnstile-widget";
+import { HoneypotField } from "@/components/forms/honeypot-field";
+import { FormSuccessCard } from "@/components/forms/form-success-card";
+import { useAntiSpamGuard, turnstileEnabled } from "@/hooks/use-anti-spam-guard";
+import { contactSchema, failsTimeTrap, type ContactFormValues } from "@/lib/validations";
+import { countryOptions, serviceInterestOptions } from "@/lib/form-options";
+import { siteConfig } from "@/data/site";
 
 export function ContactForm() {
   const searchParams = useSearchParams();
   const [status, setStatus] = useState<"idle" | "loading" | "success">("idle");
-  // Captured post-mount (not during render) so the anti-spam time-trap reflects when the
-  // form actually became interactive, without calling Date.now() from render itself.
-  const formRenderedAtRef = useRef(0);
+  const { turnstileToken, handleTurnstileVerify, handleTurnstileExpire, formRenderedAtRef } =
+    useAntiSpamGuard();
 
   const {
     register,
@@ -41,14 +45,9 @@ export function ContactForm() {
       company: "",
       country: "",
       serviceInterested: "",
-      budget: "",
       website: "",
     },
   });
-
-  useEffect(() => {
-    formRenderedAtRef.current = Date.now();
-  }, []);
 
   useEffect(() => {
     const service = searchParams.get("service");
@@ -61,32 +60,60 @@ export function ContactForm() {
     }
   }, [searchParams, setValue]);
 
+  function resetForm() {
+    reset({
+      name: "",
+      company: "",
+      email: "",
+      phone: "",
+      country: "",
+      serviceInterested: "",
+      projectDetails: "",
+      website: "",
+    });
+  }
+
   async function onSubmit(data: ContactFormValues) {
+    // Honeypot filled in, or submitted implausibly fast — silently "succeed" without actually
+    // sending, so bots aren't tipped off and don't burn the Formspree monthly submission quota.
+    if (data.website || failsTimeTrap(formRenderedAtRef.current)) {
+      setStatus("success");
+      resetForm();
+      return;
+    }
+
+    if (turnstileEnabled && !turnstileToken) {
+      toast.error("Please complete the verification challenge before sending.");
+      return;
+    }
+
     setStatus("loading");
     try {
-      const res = await fetch("/api/contact", {
+      const res = await fetch(siteConfig.formspree.contact, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...data, formRenderedAt: formRenderedAtRef.current }),
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          name: data.name,
+          company: data.company,
+          email: data.email,
+          phone: data.phone,
+          country: data.country,
+          service_interested: data.serviceInterested,
+          message: data.projectDetails,
+          _replyto: data.email,
+          _subject: `New inquiry from ${data.name}${data.company ? ` (${data.company})` : ""}`,
+          ...(turnstileToken ? { "cf-turnstile-response": turnstileToken } : {}),
+        }),
       });
-      const json = await res.json();
 
-      if (!res.ok || !json.ok) {
-        throw new Error(json.message || "Something went wrong. Please try again.");
+      if (!res.ok) {
+        const json = await res.json().catch(() => null);
+        const message = json?.errors?.map((e: { message: string }) => e.message).join(", ");
+        throw new Error(message || "Something went wrong. Please try again.");
       }
 
       setStatus("success");
-      reset({
-        name: "",
-        company: "",
-        email: "",
-        phone: "",
-        country: "",
-        serviceInterested: "",
-        budget: "",
-        projectDetails: "",
-        website: "",
-      });
+      resetForm();
     } catch (error) {
       setStatus("idle");
       toast.error(error instanceof Error ? error.message : "Something went wrong. Please try again.");
@@ -95,21 +122,12 @@ export function ContactForm() {
 
   if (status === "success") {
     return (
-      <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        className="flex flex-col items-center rounded-2xl border bg-card p-10 text-center shadow-sm"
-      >
-        <CheckCircle2 className="size-14 text-primary" />
-        <h3 className="mt-4 text-xl font-semibold">Message Sent!</h3>
-        <p className="mt-2 max-w-sm text-muted-foreground">
-          Thanks for reaching out — a member of our team will get back to you within one
-          business day.
-        </p>
-        <Button className="mt-6 rounded-full" onClick={() => setStatus("idle")}>
-          Send Another Message
-        </Button>
-      </motion.div>
+      <FormSuccessCard
+        title="Message Sent!"
+        description="Thanks for reaching out — a member of our team will get back to you within one business day."
+        buttonLabel="Send Another Message"
+        onReset={() => setStatus("idle")}
+      />
     );
   }
 
@@ -122,14 +140,7 @@ export function ContactForm() {
       noValidate
       className="rounded-2xl border bg-card p-6 shadow-sm sm:p-8"
     >
-      <input
-        type="text"
-        tabIndex={-1}
-        autoComplete="off"
-        className="absolute left-[-9999px] h-0 w-0 opacity-0"
-        aria-hidden
-        {...register("website")}
-      />
+      <HoneypotField {...register("website")} />
 
       <FieldGroup>
         <div className="grid gap-5 sm:grid-cols-2">
@@ -181,18 +192,18 @@ export function ContactForm() {
             />
             <FieldError errors={[errors.country]} />
           </Field>
-          <Field data-invalid={!!errors.budget}>
-            <FieldLabel htmlFor="contact-budget">Budget</FieldLabel>
+          <Field data-invalid={!!errors.serviceInterested}>
+            <FieldLabel htmlFor="contact-service">Service Interested</FieldLabel>
             <Controller
               control={control}
-              name="budget"
+              name="serviceInterested"
               render={({ field }) => (
                 <Select value={field.value} onValueChange={field.onChange}>
-                  <SelectTrigger id="contact-budget" className="w-full">
-                    <SelectValue placeholder="Select a budget range" />
+                  <SelectTrigger id="contact-service" className="w-full">
+                    <SelectValue placeholder="Select a service" />
                   </SelectTrigger>
                   <SelectContent>
-                    {budgetOptions.map((option) => (
+                    {serviceInterestOptions.map((option) => (
                       <SelectItem key={option} value={option}>
                         {option}
                       </SelectItem>
@@ -201,32 +212,9 @@ export function ContactForm() {
                 </Select>
               )}
             />
-            <FieldError errors={[errors.budget]} />
+            <FieldError errors={[errors.serviceInterested]} />
           </Field>
         </div>
-
-        <Field data-invalid={!!errors.serviceInterested}>
-          <FieldLabel htmlFor="contact-service">Service Interested</FieldLabel>
-          <Controller
-            control={control}
-            name="serviceInterested"
-            render={({ field }) => (
-              <Select value={field.value} onValueChange={field.onChange}>
-                <SelectTrigger id="contact-service" className="w-full">
-                  <SelectValue placeholder="Select a service" />
-                </SelectTrigger>
-                <SelectContent>
-                  {serviceInterestOptions.map((option) => (
-                    <SelectItem key={option} value={option}>
-                      {option}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            )}
-          />
-          <FieldError errors={[errors.serviceInterested]} />
-        </Field>
 
         <Field data-invalid={!!errors.projectDetails}>
           <FieldLabel htmlFor="contact-details">Project Details</FieldLabel>
@@ -238,6 +226,8 @@ export function ContactForm() {
           />
           <FieldError errors={[errors.projectDetails]} />
         </Field>
+
+        <TurnstileWidget onVerify={handleTurnstileVerify} onExpire={handleTurnstileExpire} />
 
         <Button type="submit" size="lg" className="rounded-full" disabled={status === "loading"}>
           <AnimatePresence mode="wait" initial={false}>
