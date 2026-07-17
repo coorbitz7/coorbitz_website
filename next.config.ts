@@ -27,11 +27,18 @@ const analyticsConnectSrc = [
 // dynamically (no static generation/ISR), which would undo this site's static-first
 // performance strategy for a marketing site with no sensitive data and no auth.
 // See docs/security-audit.md for the full reasoning and the upgrade path.
+//
+// 'unsafe-inline' on script-src is required, not optional: Next.js's own hydration
+// bootstrap and Suspense/streaming-resolution scripts are unnonced inline <script> tags.
+// Without a nonce-based CSP (see above), omitting 'unsafe-inline' blocks those scripts
+// entirely — confirmed in production, where it left every page frozen on its
+// loading.tsx fallback because hydration could never complete. Do not remove this
+// without switching to the full nonce-based CSP pattern first.
 function buildCsp() {
   const isDev = process.env.NODE_ENV === "development";
   const directives = [
     `default-src 'self'`,
-    `script-src 'self'${isDev ? " 'unsafe-eval'" : ""} ${analyticsScriptSrc.join(" ")}`,
+    `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""} ${analyticsScriptSrc.join(" ")}`,
     `style-src 'self' 'unsafe-inline'`,
     `img-src 'self' data: https:`,
     `font-src 'self' data:`,

@@ -46,10 +46,20 @@ protect yet, and adding auth scaffolding with no real login would itself be a li
     Prerendering. This site is 100% statically generated today (confirmed: every route shows
     `○ Static` in the build output), which is the foundation of its performance story. Trading
     that away for a nonce isn't justified for a marketing site with no sensitive data and no
-    login — so `script-src` is `'self'` plus a named list of trusted third-party script hosts,
-    with **no `'unsafe-inline'`**. `style-src` does allow `'unsafe-inline'`, a common, low-risk
-    trade-off (inline CSS can't execute arbitrary JS) needed for Next's font-loading styles and
-    Tailwind's runtime behavior. See "Future Improvements" for the nonce-based upgrade path.
+    login — so `script-src` is `'self'` plus a named list of trusted third-party script hosts.
+  - **`'unsafe-inline'` on `script-src` is required, not a hardening gap left open by
+    choice.** An earlier version of this policy omitted it, on the assumption that no inline
+    scripts were needed. That was wrong and shipped a production-breaking bug: without a
+    nonce, Next.js's own unnonced inline bootstrap/hydration scripts (and the scripts that
+    resolve a `loading.tsx` Suspense fallback into real content) were silently blocked by the
+    browser, so client-side hydration never completed — every page stayed frozen on its
+    loading fallback in production (confirmed via a live deployment; the local dev server
+    didn't surface it, which is why running an actual `next build && next start` smoke test
+    matters more than testing against `next dev`). `'unsafe-inline'` is the accepted trade-off
+    until the nonce-based CSP above is implemented — see "Future Improvements".
+  - `style-src` also allows `'unsafe-inline'`, a comparatively low-risk trade-off (inline CSS
+    can't execute arbitrary JS) needed for Next's font-loading styles and Tailwind's runtime
+    behavior.
 - **Strict-Transport-Security** — `max-age=63072000; includeSubDomains; preload` (2 years).
   Submit to hstspreload.org once the real domain is live and consistently served over HTTPS.
 - **X-Frame-Options: SAMEORIGIN** — legacy-browser backstop for the CSP `frame-ancestors` rule.
@@ -145,7 +155,8 @@ WCAG AA 4.5:1 minimum for normal text. Adjusted to `#7c4fe0` (4.85:1) in `global
 
 ## Security Checklist
 
-- [x] CSP configured (script-src restricted, no `unsafe-inline` for scripts)
+- [x] CSP configured (script-src restricted to `'self'` + named third-party hosts; `'unsafe-inline'` required for Next.js's own inline hydration scripts — see reasoning above)
+- [x] Verified against an actual `next build && next start` / production deployment, not just `next dev` (catches hydration-only issues like the one above)
 - [x] HSTS configured (2-year max-age, includeSubDomains, preload-ready)
 - [x] X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy set
 - [x] COEP/COOP/CORP set with documented, deliberate values (not blindly maxed out)
