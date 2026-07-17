@@ -1,7 +1,13 @@
 {
   "name": "coorbitz",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
+  "description": "Coorbitz marketing website — Next.js App Router, TypeScript, Tailwind CSS.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/coorbitz7/coorbitz_website.git"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
