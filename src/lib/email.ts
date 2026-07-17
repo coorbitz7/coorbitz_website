@@ -1,6 +1,5 @@
 import nodemailer, { type Transporter } from "nodemailer";
 import { siteConfig } from "@/data/site";
-import type { ContactFormValues } from "@/lib/validations";
 
 let cachedTransporter: Transporter | null = null;
 
@@ -53,48 +52,6 @@ function escapeHtml(value: string): string {
 }
 
 const toEmail = process.env.CONTACT_TO_EMAIL || siteConfig.email.contact;
-
-export async function sendContactNotification(data: ContactFormValues) {
-  const transporter = getTransporter();
-  const html = wrapEmail(
-    "New Contact Form Submission",
-    [
-      row("Name", data.name),
-      data.company ? row("Company", data.company) : "",
-      row("Email", data.email),
-      row("Phone", data.phone),
-      row("Country", data.country),
-      row("Service Interested", data.serviceInterested),
-      row("Budget", data.budget),
-      `<p style="margin-top:12px;"><strong>Project Details:</strong></p><p style="white-space:pre-wrap;">${escapeHtml(data.projectDetails)}</p>`,
-    ].join("")
-  );
-
-  await transporter.sendMail({
-    from: `"${siteConfig.name} Website" <${process.env.SMTP_USER}>`,
-    to: toEmail,
-    replyTo: data.email,
-    subject: `New inquiry from ${data.name}${data.company ? ` (${data.company})` : ""}`,
-    html,
-  });
-}
-
-export async function sendContactThankYou(data: ContactFormValues) {
-  const transporter = getTransporter();
-  const html = wrapEmail(
-    `Thanks for reaching out, ${data.name.split(" ")[0]}!`,
-    `<p>We've received your message and a member of the Coorbitz team will get back to you within one business day.</p>
-     <p>In the meantime, feel free to browse our <a href="${siteConfig.url}/services" style="color:#2563eb;">services</a> or <a href="${siteConfig.url}/industries" style="color:#2563eb;">industries we serve</a>.</p>
-     <p>— The ${siteConfig.name} Team</p>`
-  );
-
-  await transporter.sendMail({
-    from: `"${siteConfig.name}" <${process.env.SMTP_USER}>`,
-    to: data.email,
-    subject: `We've received your message, ${data.name.split(" ")[0]}`,
-    html,
-  });
-}
 
 type CareerNotificationInput = {
   name: string;

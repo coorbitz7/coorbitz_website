@@ -27,12 +27,3 @@ export const serviceInterestOptions = [
   "UI/UX Design",
   "Not Sure Yet",
 ];
-
-export const budgetOptions = [
-  "Under $10,000",
-  "$10,000 – $25,000",
-  "$25,000 – $50,000",
-  "$50,000 – $100,000",
-  "$100,000+",
-  "Not sure yet",
-];

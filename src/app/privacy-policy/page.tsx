@@ -25,7 +25,7 @@ export default function PrivacyPolicyPage() {
         <p>We collect information you provide directly to us, including:</p>
         <ul>
           <li>Contact details submitted through our contact and careers forms (name, email, phone, company)</li>
-          <li>Project details, budget ranges, and service interests you share with us</li>
+          <li>Project details and service interests you share with us</li>
           <li>Resumes and application materials submitted through our careers page</li>
           <li>Newsletter subscription email addresses</li>
         </ul>

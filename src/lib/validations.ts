@@ -13,7 +13,6 @@ export const contactSchema = z.object({
   phone: z.string().trim().min(7, "Please enter a valid phone number").max(30),
   country: z.string().min(1, "Please select your country"),
   serviceInterested: z.string().min(1, "Please select a service"),
-  budget: z.string().min(1, "Please select a budget range"),
   projectDetails: z
     .string()
     .trim()
