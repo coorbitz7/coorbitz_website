@@ -83,8 +83,8 @@ Copy `.env.example` to `.env.local` and fill in:
 | `NEXT_PUBLIC_SITE_URL` | Canonical production URL (used in metadata, sitemap, robots.txt, OG tags) |
 | `NEXT_PUBLIC_FORMSPREE_CONTACT_ENDPOINT` | Formspree endpoint the Contact page form submits to (defaults to `https://formspree.io/f/xpqvpkol`) |
 | `SMTP_HOST` / `SMTP_PORT` / `SMTP_USER` / `SMTP_PASS` | SMTP credentials Nodemailer uses to send Careers-form and newsletter email |
-| `CONTACT_TO_EMAIL` | Inbox that receives newsletter-signup notifications (defaults to `coorbitz7@gmail.com`) |
-| `CAREERS_TO_EMAIL` | Inbox that receives job applications (defaults to `coorbitz7@gmail.com`) |
+| `CONTACT_TO_EMAIL` | Inbox that receives newsletter-signup notifications (defaults to `info@coorbitz.com`) |
+| `CAREERS_TO_EMAIL` | Inbox that receives job applications (defaults to `info@coorbitz.com`) |
 
 ### Contact form (Formspree)
 
@@ -100,7 +100,7 @@ To point the site at a different Formspree form (e.g. a staging form), create a 
 [formspree.io/forms](https://formspree.io/forms) and set `NEXT_PUBLIC_FORMSPREE_CONTACT_ENDPOINT`
 to its endpoint URL.
 
-### Setting up Gmail SMTP (recommended for `coorbitz7@gmail.com`)
+### Setting up Gmail SMTP (recommended for `info@coorbitz.com`)
 
 Only needed for the Careers form and newsletter signups — the Contact form doesn't use SMTP.
 
@@ -237,7 +237,7 @@ behind the same TLS-terminating reverse proxy (Nginx/Caddy/Cloudflare) described
   [`docs/security-audit.md`](docs/security-audit.md) for details and
   [`docs/integrations-setup.md`](docs/integrations-setup.md) to enable Turnstile.
 - **Found a security issue?** Please report it privately rather than opening a public GitHub
-  issue — email `coorbitz7@gmail.com`.
+  issue — email `info@coorbitz.com`.
 - See [`docs/`](docs) for the full security audit, SEO audit, performance report, deployment
   checklist, external-integrations setup guide, and recommended future improvements.
 

@@ -20,9 +20,9 @@ export const siteConfig = {
     "Coorbitz",
   ],
   email: {
-    contact: "coorbitz7@gmail.com",
-    careers: "coorbitz7@gmail.com",
-    support: "coorbitz7@gmail.com",
+    contact: "info@coorbitz.com",
+    careers: "info@coorbitz.com",
+    support: "info@coorbitz.com",
   },
   // Placeholder — replace with the real business line before launch.
   phone: {
