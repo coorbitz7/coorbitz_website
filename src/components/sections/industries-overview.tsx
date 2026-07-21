@@ -12,7 +12,7 @@ export function IndustriesOverview() {
       <Container>
         <SectionHeading
           eyebrow="Who We Serve"
-          title="Purpose-Built for Every Industry"
+          title="Industries We Work In"
           description="Deep domain experience across 15 industries — we speak your business language, not just code."
         />
 

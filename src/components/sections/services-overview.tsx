@@ -12,7 +12,7 @@ export function ServicesOverview() {
       <Container>
         <SectionHeading
           eyebrow="What We Do"
-          title="End-to-End Technology & AI Services"
+          title="From Custom Software to AI Agents"
           description="From custom software to autonomous AI agents — everything you need to build, automate, and scale under one roof."
         />
 

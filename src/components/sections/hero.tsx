@@ -42,7 +42,7 @@ export function Hero() {
           transition={{ duration: 0.5 }}
           className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-sm font-medium text-primary"
         >
-          <Sparkles className="size-4" /> AI-Powered Digital Innovation
+          <Sparkles className="size-4" /> IT Services &amp; AI Solutions
         </motion.span>
 
         <motion.h1
@@ -51,8 +51,9 @@ export function Hero() {
           transition={{ duration: 0.6, delay: 0.1 }}
           className="mt-6 max-w-4xl text-balance text-4xl font-bold tracking-tight sm:text-6xl lg:text-7xl"
         >
-          Empowering Businesses with{" "}
-          <span className="text-gradient-brand">AI-Driven Digital Innovation</span>
+          We build the{" "}
+          <span className="text-gradient-brand">software and AI</span> your business
+          runs on
         </motion.h1>
 
         <motion.p
@@ -61,8 +62,9 @@ export function Hero() {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="mt-6 max-w-2xl text-balance text-lg text-muted-foreground sm:text-xl"
         >
-          Coorbitz helps startups, SMEs, and enterprises build scalable software and
-          intelligent automation — from custom platforms to production-grade AI agents.
+          From web and mobile platforms to automation and AI agents, Coorbitz partners
+          with startups, SMEs, and enterprises to design and ship software that holds up
+          in production — not just in a demo.
         </motion.p>
 
         <motion.div
