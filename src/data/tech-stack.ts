@@ -42,8 +42,8 @@ export const processSteps = [
 
 export const whyChooseUs = [
   {
-    title: "Proven Delivery Track Record",
-    description: "200+ projects delivered across 15+ industries since 2016.",
+    title: "End-to-End Delivery",
+    description: "We take products from first discovery call to production launch and beyond.",
   },
   {
     title: "Dedicated AI Practice",
@@ -63,13 +63,6 @@ export const whyChooseUs = [
   },
   {
     title: "Long-Term Partnership",
-    description: "Average client relationship of 3+ years — we build for the long run, not one-off projects.",
+    description: "We build for the long run — ongoing partnerships and support, not one-off projects.",
   },
-] as const;
-
-export const stats = [
-  { value: 200, suffix: "+", label: "Projects Delivered" },
-  { value: 150, suffix: "+", label: "Team Members" },
-  { value: 15, suffix: "+", label: "Industries Served" },
-  { value: 98, suffix: "%", label: "Client Retention" },
 ] as const;

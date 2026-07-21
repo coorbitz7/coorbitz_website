@@ -65,7 +65,7 @@ export default function AboutPage() {
               highly skilled engineering team.
             </p>
             <p className="mt-4 text-muted-foreground">
-              Today, we help startups, SMEs, and enterprises across 15+ industries build
+              Today, we help startups, SMEs, and enterprises across a range of industries build
               software and AI systems that hold up under real-world scale — not just in demos.
             </p>
           </RevealOnScroll>
