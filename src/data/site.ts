@@ -26,7 +26,7 @@ export const siteConfig = {
   },
   // Placeholder — replace with the real business line before launch.
   phone: {
-    us: "+1 (312) 555-0176",
+    us: "+1 (872) 258-2235",
     india: "+91 79905 12345",
   },
   // Coorbitz is the dedicated IT Services & AI Solutions brand operating under Coordinatez.

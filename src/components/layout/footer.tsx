@@ -78,7 +78,7 @@ export function Footer() {
                 <MapPin className="mt-0.5 size-4 shrink-0 text-primary" />
                 <span>
                   <span className="block text-xs font-medium text-foreground/60">
-                    {siteConfig.locations.development.label}
+                    {siteConfig.locations.development.company}
                   </span>
                   {siteConfig.locations.development.city}, {siteConfig.locations.development.country}
                 </span>
@@ -87,7 +87,7 @@ export function Footer() {
                 <MapPin className="mt-0.5 size-4 shrink-0 text-primary" />
                 <span>
                   <span className="block text-xs font-medium text-foreground/60">
-                    {siteConfig.locations.headquarters.label}
+                    {siteConfig.locations.headquarters.company} (Headquarters)
                   </span>
                   {siteConfig.locations.headquarters.city}, {siteConfig.locations.headquarters.country}
                 </span>
