@@ -6,7 +6,6 @@ import { IndustriesOverview } from "@/components/sections/industries-overview";
 import { WhyChooseUs } from "@/components/sections/why-choose-us";
 import { ProcessTimeline } from "@/components/sections/process-timeline";
 import { TechStackSection } from "@/components/sections/tech-stack-section";
-import { TestimonialsCarousel } from "@/components/sections/testimonials-carousel";
 import { FaqSection } from "@/components/sections/faq-section";
 import { InsightsPreview } from "@/components/sections/insights-preview";
 import { ContactCta } from "@/components/sections/contact-cta";
@@ -44,7 +43,6 @@ export default function HomePage() {
       <WhyChooseUs />
       <ProcessTimeline />
       <TechStackSection />
-      <TestimonialsCarousel />
       <FaqSection />
       <InsightsPreview />
       <ContactCta />
