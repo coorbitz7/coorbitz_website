@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu } from "lucide-react";
+import { ArrowRight, Menu } from "lucide-react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import {
@@ -18,8 +18,13 @@ import { Container } from "@/components/shared/container";
 import { Logo } from "@/components/shared/logo";
 import { ThemeToggle } from "@/components/layout/theme-toggle";
 import { SearchDialog } from "@/components/layout/search-dialog";
-import { mainNav } from "@/data/nav";
+import { mainNav, primaryCta } from "@/data/nav";
+import { siteConfig } from "@/data/site";
 import { cn } from "@/lib/utils";
+
+function isActivePath(pathname: string, href: string) {
+  return pathname === href || pathname.startsWith(`${href}/`);
+}
 
 export function Navbar() {
   const pathname = usePathname();
@@ -27,7 +32,7 @@ export function Navbar() {
 
   useEffect(() => {
     function onScroll() {
-      setScrolled(window.scrollY > 12);
+      setScrolled(window.scrollY > 8);
     }
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -35,79 +40,108 @@ export function Navbar() {
   }, []);
 
   return (
-    <motion.header
-      initial={{ y: -80 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+    <header
       className={cn(
-        "sticky top-0 z-50 w-full transition-all duration-300",
-        scrolled ? "glass shadow-sm" : "bg-transparent"
+        "sticky top-0 z-50 w-full border-b transition-[background-color,border-color] duration-300",
+        scrolled ? "border-border bg-background/90 backdrop-blur-md" : "border-transparent bg-background/0"
       )}
     >
-      <Container className="flex h-16 items-center justify-between lg:h-20">
-        <Link href="/" aria-label="Coorbitz home">
+      <Container className="flex h-16 items-center justify-between gap-6 lg:h-20">
+        <Link href="/" aria-label="Coorbitz home" className="shrink-0 rounded-sm outline-none focus-visible:ring-2 focus-visible:ring-ring/60">
           <Logo />
         </Link>
 
-        <nav className="hidden items-center gap-1 lg:flex">
-          {mainNav.map((item) => {
-            const isActive = pathname === item.href;
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={cn(
-                  "rounded-full px-4 py-2 text-sm font-medium transition-colors hover:text-primary",
-                  isActive ? "text-primary" : "text-foreground/80"
-                )}
-              >
-                {item.label}
-              </Link>
-            );
-          })}
+        <nav aria-label="Primary" className="hidden lg:block">
+          <ul className="flex items-center gap-7">
+            {mainNav.map((item) => {
+              const active = isActivePath(pathname, item.href);
+              return (
+                <li key={item.href} className="relative">
+                  <Link
+                    href={item.href}
+                    aria-current={active ? "page" : undefined}
+                    className={cn(
+                      "block py-2 text-sm font-medium transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring/60 rounded-sm",
+                      active ? "text-foreground" : "text-muted-foreground hover:text-foreground"
+                    )}
+                  >
+                    {item.label}
+                  </Link>
+                  {active && (
+                    <motion.span
+                      layoutId="nav-underline"
+                      aria-hidden
+                      className="absolute inset-x-0 -bottom-0.5 h-0.5 bg-primary"
+                      transition={{ type: "spring", stiffness: 380, damping: 32 }}
+                    />
+                  )}
+                </li>
+              );
+            })}
+          </ul>
         </nav>
 
         <div className="flex items-center gap-1">
           <SearchDialog />
           <ThemeToggle />
-          <Button asChild className="ml-2 hidden rounded-full lg:inline-flex">
-            <Link href="/contact">Get Free Consultation</Link>
+          <Button asChild className="ml-2 hidden h-9 px-4 lg:inline-flex">
+            <Link href={primaryCta.href}>
+              {primaryCta.label} <ArrowRight className="size-4" />
+            </Link>
           </Button>
 
           <Sheet>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="rounded-full lg:hidden" aria-label="Open menu">
+              <Button variant="ghost" size="icon" className="lg:hidden" aria-label="Open menu">
                 <Menu className="size-5" />
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-[300px]">
-              <SheetHeader>
-                <SheetTitle>Menu</SheetTitle>
+            <SheetContent side="right" className="flex w-[320px] flex-col gap-0 p-0 sm:max-w-sm">
+              <SheetHeader className="border-b px-6 py-5 text-left">
+                <SheetTitle>
+                  <Logo />
+                </SheetTitle>
               </SheetHeader>
-              <nav className="flex flex-col gap-1 px-4">
-                {mainNav.map((item) => (
-                  <SheetClose asChild key={item.href}>
-                    <Link
-                      href={item.href}
-                      className={cn(
-                        "rounded-lg px-3 py-2.5 text-base font-medium hover:bg-accent",
-                        pathname === item.href ? "text-primary" : "text-foreground"
-                      )}
-                    >
-                      {item.label}
-                    </Link>
-                  </SheetClose>
-                ))}
+              <nav aria-label="Mobile" className="flex-1 overflow-y-auto px-2 py-4">
+                <ol>
+                  {mainNav.map((item, index) => {
+                    const active = isActivePath(pathname, item.href);
+                    return (
+                      <li key={item.href}>
+                        <SheetClose asChild>
+                          <Link
+                            href={item.href}
+                            aria-current={active ? "page" : undefined}
+                            className={cn(
+                              "flex items-baseline gap-4 rounded-md px-4 py-3 font-heading text-xl font-semibold transition-colors hover:bg-muted",
+                              active ? "text-primary" : "text-foreground"
+                            )}
+                          >
+                            <span className="font-mono text-xs text-muted-foreground">0{index + 1}</span>
+                            {item.label}
+                          </Link>
+                        </SheetClose>
+                      </li>
+                    );
+                  })}
+                </ol>
+              </nav>
+              <div className="space-y-4 border-t px-6 py-5">
                 <SheetClose asChild>
-                  <Button asChild className="mt-4 rounded-full">
-                    <Link href="/contact">Get Free Consultation</Link>
+                  <Button asChild className="h-11 w-full text-base">
+                    <Link href={primaryCta.href}>
+                      {primaryCta.label} <ArrowRight className="size-4" />
+                    </Link>
                   </Button>
                 </SheetClose>
-              </nav>
+                <a href={`mailto:${siteConfig.email.contact}`} className="block font-mono text-sm text-muted-foreground">
+                  {siteConfig.email.contact}
+                </a>
+              </div>
             </SheetContent>
           </Sheet>
         </div>
       </Container>
-    </motion.header>
+    </header>
   );
 }

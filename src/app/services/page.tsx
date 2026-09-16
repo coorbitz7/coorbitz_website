@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Container } from "@/components/shared/container";
-import { RevealOnScroll } from "@/components/shared/reveal-on-scroll";
+import { SectionHeading } from "@/components/shared/section-heading";
 import { ServicesQuickNav } from "@/components/sections/services-quick-nav";
 import { ServiceSection } from "@/components/sections/service-section";
 import { ContactCta } from "@/components/sections/contact-cta";
@@ -11,17 +11,17 @@ import { JsonLd } from "@/components/shared/json-ld";
 export const metadata: Metadata = buildMetadata({
   title: "Services",
   description:
-    "Explore Coorbitz's 14 IT and AI services — from web and mobile development to AI agents, business automation, and cloud solutions.",
+    "What Coorbitz builds: AI and machine learning, AI agents and automation, custom software, web and app development, data and analytics, and digital solutions.",
   path: "/services",
   keywords: [
-    "IT services company",
-    "software development company",
-    "AI integration company",
-    "business automation company",
     "custom software development",
-    "AI chatbot development",
-    "web development company Chicago",
-    "software development company Mehsana Gujarat",
+    "AI development services",
+    "AI agents",
+    "business automation",
+    "web development company",
+    "data analytics services",
+    "software company Chicago",
+    "software company Mehsana Gujarat",
   ],
 });
 
@@ -34,20 +34,15 @@ export default function ServicesPage() {
           ...services.map((service) => serviceJsonLd(service)),
         ]}
       />
-      <section className="py-16 text-center sm:py-20">
+      <section className="border-b py-16 sm:py-20">
         <Container>
-          <RevealOnScroll>
-            <span className="inline-flex rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-sm font-medium text-primary">
-              Our Services
-            </span>
-            <h1 className="mx-auto mt-6 max-w-3xl text-balance text-4xl font-bold tracking-tight sm:text-5xl">
-              Technology & AI Services Built to Move the Needle
-            </h1>
-            <p className="mx-auto mt-5 max-w-2xl text-balance text-lg text-muted-foreground">
-              14 specialized services, one accountable team — from first line of code to
-              production-grade AI systems.
-            </p>
-          </RevealOnScroll>
+          <SectionHeading
+            as="h1"
+            eyebrow="Services"
+            title="What we build, and how we think about it."
+            description="Six areas of work, most engagements combining two or three. Each section below says what it usually involves, who it tends to be for and what it's built with."
+            titleClassName="sm:text-5xl lg:text-[3.25rem]"
+          />
         </Container>
       </section>
 

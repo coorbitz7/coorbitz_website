@@ -5,30 +5,38 @@ built with Next.js App Router, TypeScript, Tailwind CSS, shadcn/ui, and Framer M
 
 ## Features
 
-- 10 fully-built pages: Home, About, Services (14 services), Industries (15 industries),
-  Careers, Contact, Privacy Policy, Terms & Conditions, Insights (blog-ready), 404.
-- Contact and Careers forms with client + server validation, honeypot + time-trap + optional
-  Cloudflare Turnstile anti-spam protection, and email delivery (Formspree / Nodemailer).
+- 10 pages: Home, Services (6 service areas), Industries (7), Work, About, Careers, Contact,
+  Insights, Privacy Policy, Terms & Conditions, plus a designed 404.
+- Interactive hero: a lazy-loaded React Three Fiber network scene on desktop (cursor parallax,
+  data pulses), with a static SVG of the same system on touch devices, under reduced-motion,
+  or without WebGL.
+- Interactive services explorer, a seven-step "How we build" flow, and an animated
+  business-data → systems → AI → agents → automation → action architecture diagram.
+- Contact (Formspree) and Careers (Nodemailer, resume upload) forms with client + server
+  validation, honeypot, time-trap and optional Cloudflare Turnstile.
 - Production HTTP security headers (CSP, HSTS, and more) — see
   [`docs/security-audit.md`](docs/security-audit.md).
-- Structured data (JSON-LD), per-page metadata, sitemap/robots, and local SEO targeting — see
+- Structured data (JSON-LD), per-page metadata, sitemap/robots and local SEO — see
   [`docs/seo-audit.md`](docs/seo-audit.md).
-- Optional, env-gated analytics/marketing integrations (GA4, GTM, Clarity, Meta Pixel,
-  LinkedIn Insight Tag) that add zero cost until configured.
-- Dark/light theming, scroll animations, and a WCAG 2.2 accessibility pass.
-- Docker and CI (GitHub Actions) support for a self-hosted or containerized deployment path.
+- Optional, env-gated analytics integrations (GA4, GTM, Clarity, Meta Pixel, LinkedIn) that add
+  zero cost until configured.
+- Light/dark themes, WCAG-minded contrast and keyboard support, `prefers-reduced-motion`
+  honored by every animation.
+- Docker and CI (GitHub Actions) support.
 
 ## Tech Stack
 
 - **Framework**: Next.js 16 (App Router, Turbopack, Server Components)
 - **Language**: TypeScript
 - **Styling**: Tailwind CSS v4 + shadcn/ui (radix-nova style)
-- **Animation**: Framer Motion
+- **Type**: Roboto Slab (headings, matches the wordmark), IBM Plex Sans (body), IBM Plex Mono
+  (labels) — all self-hosted via `next/font`
+- **Animation**: Framer Motion (scroll reveals, word reveals, magnetic CTAs; all honor reduced motion)
+- **3D**: three.js + React Three Fiber, loaded only on desktop as a separate client chunk
 - **Forms**: react-hook-form + Zod validation
 - **Email**: Formspree (Contact form) + Nodemailer/SMTP (Careers form & newsletter signups)
 - **Theming**: next-themes (light/dark, system default)
 - **Icons**: lucide-react
-- **Fonts**: Geist Sans / Geist Mono (self-hosted via `next/font`)
 
 ## Project Structure
 
@@ -37,15 +45,15 @@ coorbitz/
   src/
     app/            Route segments (pages, API routes, sitemap/robots, icon/OG image)
     components/
-      layout/       Navbar, footer, theme toggle, cookie consent, etc.
-      sections/     Page-section building blocks (hero, stats, service sections, ...)
-      forms/        Contact & career forms (react-hook-form + Zod), shared form primitives
-      shared/       Reusable primitives (Container, SectionHeading, RevealOnScroll, ...)
+      layout/       Navbar, footer, theme + motion providers, cookie consent, etc.
+      sections/     Page sections (hero + 3D scene, services explorer, how-we-build, system flow, ...)
+      forms/        Contact & career forms, shared form primitives
+      shared/       Logo/mark, section heading, reveal, magnetic, split-reveal, schematics
       ui/           shadcn/ui components
     data/           Content as typed constants — edit these to update site copy
-    lib/            email.ts, validations.ts, seo.ts, rate-limit.ts, turnstile.ts, utils.ts
-    hooks/          Shared client-side hooks (e.g. useAntiSpamGuard for the two forms)
-  public/           Static assets (logo.svg — favicon/OG image are generated, see SEO section)
+    lib/            seo.ts, brand-mark.ts, validations.ts, email.ts, rate-limit.ts, turnstile.ts
+    hooks/          Shared client-side hooks
+  public/           Static assets (logo.svg — favicon/OG image are generated at build time)
   docs/             Security/SEO/performance audits, deployment & integrations guides
   .github/          CI workflow (lint + typecheck + build on push/PR)
   Dockerfile, .dockerignore
@@ -70,7 +78,7 @@ Other scripts:
 
 ```bash
 npm run build   # production build
-npm run start   # run the production build locally
+npm run start   # run the production build locally (Next warns about output: "standalone"; it still serves — the Docker image uses node .next/standalone/server.js)
 npm run lint     # ESLint
 ```
 
@@ -122,16 +130,21 @@ silently pretends an email was sent when it wasn't.
 
 | To change... | Edit |
 |---|---|
-| Company name, tagline, addresses, phone, socials | `src/data/site.ts` |
-| Navigation links | `src/data/nav.ts` |
-| The 14 services (features, benefits, tech, CTA) | `src/data/services.ts` |
-| The 15 industries | `src/data/industries.ts` |
-| Core values | `src/data/team.ts` |
-| Job openings | `src/data/jobs.ts` |
-| Testimonials | `src/data/testimonials.ts` |
+| Company name, tagline, addresses, phone, email, socials | `src/data/site.ts` |
+| Navigation and footer links, primary CTA | `src/data/nav.ts` |
+| The 6 services (copy, what we build, tech, industries) | `src/data/services.ts` |
+| The 7 industries | `src/data/industries.ts` |
+| Selected work / case studies | `src/data/work.ts` |
+| Working principles and "problems we solve" | `src/data/company.ts` |
+| The 7 build-process steps and the technology list | `src/data/tech-stack.ts` |
 | FAQ | `src/data/faqs.ts` |
-| Tech stack, process steps, stats, "why choose us" | `src/data/tech-stack.ts` |
-| Insights/blog preview cards | `src/data/insights.ts` |
+| Job openings and internship info | `src/data/jobs.ts` |
+| Insights categories and (future) posts | `src/data/insights.ts` |
+| Brand mark geometry and colors | `src/lib/brand-mark.ts`, `--mark-*` in `src/app/globals.css` |
+
+Nothing on the site is invented: the Work page describes real systems with client and prospect
+names withheld, there are no testimonials or statistics, and the Insights page stays honest
+about having no posts until real ones are added to `src/data/insights.ts`.
 
 ## SEO
 
@@ -139,8 +152,9 @@ silently pretends an email was sent when it wasn't.
 - `src/app/opengraph-image.tsx` and `src/app/icon.tsx` generate the social-share image and
   favicon at build time (no static image assets to maintain).
 - `src/app/sitemap.ts` and `src/app/robots.ts` are generated from a single route list.
-- JSON-LD: `Organization` + `LocalBusiness` sitewide (root layout), `FAQPage` on the homepage
-  FAQ section, `JobPosting` per role on Careers, `BreadcrumbList` on every subpage.
+- JSON-LD: `Organization`, `WebSite` and `LocalBusiness` sitewide (root layout), `Service` per service,
+  `FAQPage` on the homepage, `ContactPage` on Contact, `JobPosting` per role on Careers, and
+  `BreadcrumbList` on every subpage.
 
 ## Deployment
 

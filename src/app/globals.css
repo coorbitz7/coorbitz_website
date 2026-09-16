@@ -7,9 +7,13 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-  --font-heading: var(--font-geist-sans);
+  --font-sans: var(--font-plex-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --font-heading: var(--font-roboto-slab), Georgia, "Times New Roman", serif;
+  --color-brand-navy: var(--brand-navy);
+  --color-brand-blue: var(--brand-blue);
+  --color-brand-sky: var(--brand-sky);
+  --color-brand-ice: var(--brand-ice);
   --color-brand-primary: var(--brand-primary);
   --color-brand-secondary: var(--brand-secondary);
   --color-brand-accent: var(--brand-accent);
@@ -51,112 +55,162 @@
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
+/*
+ * Palette: derived from the Coorbitz mark — deep navy through sky blue — on cool,
+ * slightly warm-neutral surfaces. No purple anywhere. Text sits on off-white so white
+ * cards read as a distinct layer without needing shadows everywhere.
+ */
 :root {
-  --background: #ffffff;
-  --foreground: #0f172a;
+  --background: #f6f8fa;
+  --foreground: #0b1e33;
   --card: #ffffff;
-  --card-foreground: #0f172a;
+  --card-foreground: #0b1e33;
   --popover: #ffffff;
-  --popover-foreground: #0f172a;
-  --primary: #2563eb;
+  --popover-foreground: #0b1e33;
+  --primary: #0b3f75;
   --primary-foreground: #ffffff;
-  --secondary: #7c3aed;
-  --secondary-foreground: #ffffff;
-  --muted: #f1f5f9;
-  --muted-foreground: #64748b;
-  --accent: #f1f5f9;
-  --accent-foreground: #0f172a;
+  --secondary: #e6edf4;
+  --secondary-foreground: #0b3f75;
+  --muted: #edf1f5;
+  --muted-foreground: #526579;
+  --accent: #e7f3fb;
+  --accent-foreground: #0b3f75;
   --destructive: oklch(0.577 0.245 27.325);
-  --border: #e2e8f0;
-  --input: #e2e8f0;
-  --ring: #2563eb;
-  --chart-1: #2563eb;
-  --chart-2: #7c3aed;
-  --chart-3: #06b6d4;
-  --chart-4: #64748b;
-  --chart-5: #0f172a;
-  --radius: 0.85rem;
-  --brand-primary: #2563eb;
-  --brand-secondary: #7c3aed;
-  --brand-accent: #06b6d4;
-  --sidebar: #f8fafc;
-  --sidebar-foreground: #0f172a;
-  --sidebar-primary: #2563eb;
+  --border: #d8e0e8;
+  --input: #cfd9e3;
+  --ring: #2a9bd8;
+  --chart-1: #0b3f75;
+  --chart-2: #2a9bd8;
+  --chart-3: #53c6f2;
+  --chart-4: #526579;
+  --chart-5: #0b1e33;
+  --radius: 0.5rem;
+  --brand-navy: #0b3f75;
+  --brand-blue: #1e78be;
+  --brand-sky: #2a9bd8;
+  --brand-ice: #53c6f2;
+  --brand-primary: var(--brand-navy);
+  --brand-secondary: var(--brand-blue);
+  --brand-accent: var(--brand-sky);
+  --mark-1: #1f7dc2;
+  --mark-2: #3aaee3;
+  --mark-3: #53c6f2;
+  --mark-4: #0b3f75;
+  --mark-5: #1567a8;
+  --sidebar: #ffffff;
+  --sidebar-foreground: #0b1e33;
+  --sidebar-primary: #0b3f75;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #f1f5f9;
-  --sidebar-accent-foreground: #0f172a;
-  --sidebar-border: #e2e8f0;
-  --sidebar-ring: #2563eb;
+  --sidebar-accent: #edf1f5;
+  --sidebar-accent-foreground: #0b1e33;
+  --sidebar-border: #d8e0e8;
+  --sidebar-ring: #2a9bd8;
 }
 
 .dark {
-  --background: #0f172a;
-  --foreground: #f8fafc;
-  --card: #141e33;
-  --card-foreground: #f8fafc;
-  --popover: #141e33;
-  --popover-foreground: #f8fafc;
-  --primary: #3b82f6;
-  --primary-foreground: #0f172a;
-  --secondary: #7c4fe0;
-  --secondary-foreground: #ffffff;
-  --muted: #1e293b;
-  --muted-foreground: #94a3b8;
-  --accent: #1e293b;
-  --accent-foreground: #f8fafc;
+  --background: #08131f;
+  --foreground: #e6eef6;
+  --card: #0e1b2b;
+  --card-foreground: #e6eef6;
+  --popover: #0e1b2b;
+  --popover-foreground: #e6eef6;
+  --primary: #4fb3e8;
+  --primary-foreground: #061423;
+  --secondary: #16283a;
+  --secondary-foreground: #cfe4f5;
+  --muted: #101e2f;
+  --muted-foreground: #97a9bb;
+  --accent: #12283b;
+  --accent-foreground: #cfe4f5;
   --destructive: oklch(0.704 0.191 22.216);
-  --border: color-mix(in oklab, #f8fafc 12%, transparent);
-  --input: color-mix(in oklab, #f8fafc 16%, transparent);
-  --ring: #3b82f6;
-  --chart-1: #3b82f6;
-  --chart-2: #7c4fe0;
-  --chart-3: #22d3ee;
-  --chart-4: #94a3b8;
-  --chart-5: #f8fafc;
-  --brand-primary: #3b82f6;
-  --brand-secondary: #7c4fe0;
-  --brand-accent: #22d3ee;
-  --sidebar: #141e33;
-  --sidebar-foreground: #f8fafc;
-  --sidebar-primary: #3b82f6;
-  --sidebar-primary-foreground: #0f172a;
-  --sidebar-accent: #1e293b;
-  --sidebar-accent-foreground: #f8fafc;
-  --sidebar-border: color-mix(in oklab, #f8fafc 12%, transparent);
-  --sidebar-ring: #3b82f6;
+  --border: color-mix(in oklab, #e6eef6 12%, transparent);
+  --input: color-mix(in oklab, #e6eef6 16%, transparent);
+  --ring: #4fb3e8;
+  --chart-1: #4fb3e8;
+  --chart-2: #7fd6f7;
+  --chart-3: #2a85cf;
+  --chart-4: #97a9bb;
+  --chart-5: #e6eef6;
+  --brand-navy: #1e5a96;
+  --brand-blue: #2a85cf;
+  --brand-sky: #4fb3e8;
+  --brand-ice: #7fd6f7;
+  --mark-1: #4fb3e8;
+  --mark-2: #7fd6f7;
+  --mark-3: #a9e4fa;
+  --mark-4: #2a85cf;
+  --mark-5: #3aa0de;
+  --sidebar: #0e1b2b;
+  --sidebar-foreground: #e6eef6;
+  --sidebar-primary: #4fb3e8;
+  --sidebar-primary-foreground: #061423;
+  --sidebar-accent: #101e2f;
+  --sidebar-accent-foreground: #e6eef6;
+  --sidebar-border: color-mix(in oklab, #e6eef6 12%, transparent);
+  --sidebar-ring: #4fb3e8;
 }
 
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
+  html {
+    @apply font-sans;
+    -webkit-text-size-adjust: 100%;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
   body {
     @apply bg-background text-foreground;
+    font-feature-settings: "kern", "liga", "calt";
   }
-  html {
-    @apply font-sans scroll-smooth;
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-heading);
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+  }
+  ::selection {
+    background: color-mix(in oklab, var(--brand-sky) 28%, transparent);
+  }
+  /* Keep CSS-driven motion honest for people who asked for less of it. */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
   }
 }
 
 @layer utilities {
+  .section-y {
+    @apply py-20 sm:py-24 lg:py-28;
+  }
+  /* Small mono label used above headings and for indices — the site's "technical" voice. */
+  .eyebrow {
+    @apply font-mono text-xs font-medium uppercase tracking-[0.14em] text-primary;
+  }
   .text-gradient-brand {
-    @apply bg-clip-text text-transparent bg-[linear-gradient(135deg,var(--brand-primary)_0%,var(--brand-secondary)_100%)];
+    @apply bg-clip-text text-transparent bg-[linear-gradient(120deg,var(--brand-navy)_0%,var(--brand-sky)_100%)];
   }
   .bg-gradient-brand {
-    background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-secondary) 100%);
+    background: linear-gradient(120deg, var(--brand-navy) 0%, var(--brand-blue) 100%);
   }
-  .bg-gradient-brand-radial {
-    background: radial-gradient(
-      ellipse at top,
-      color-mix(in oklab, var(--brand-primary) 18%, transparent) 0%,
-      transparent 60%
-    );
-  }
-  .glass {
-    @apply border border-white/20 bg-white/60 backdrop-blur-xl dark:border-white/10 dark:bg-white/5;
-  }
-  .section-y {
-    @apply py-20 sm:py-28;
+  /* Faint engineering-paper grid, faded toward the edges. */
+  .grid-paper {
+    background-image:
+      linear-gradient(to right, color-mix(in oklab, var(--foreground) 7%, transparent) 1px, transparent 1px),
+      linear-gradient(to bottom, color-mix(in oklab, var(--foreground) 7%, transparent) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: radial-gradient(ellipse 70% 70% at 50% 40%, #000 30%, transparent 100%);
   }
   .scrollbar-none {
     scrollbar-width: none;
@@ -167,30 +221,12 @@
   }
 }
 
-@keyframes float-slow {
-  0%,
-  100% {
-    transform: translate3d(0, 0, 0) rotate(0deg);
-  }
-  50% {
-    transform: translate3d(0, -22px, 0) rotate(6deg);
+/* Dashed connector animation for the system-flow diagram (paused by the reduced-motion rule above). */
+@keyframes flow-dash {
+  to {
+    stroke-dashoffset: -24;
   }
 }
-
-@keyframes float-slower {
-  0%,
-  100% {
-    transform: translate3d(0, 0, 0) rotate(0deg);
-  }
-  50% {
-    transform: translate3d(0, 18px, 0) rotate(-8deg);
-  }
-}
-
-.animate-float-slow {
-  animation: float-slow 8s ease-in-out infinite;
-}
-
-.animate-float-slower {
-  animation: float-slower 11s ease-in-out infinite;
+.animate-flow-dash {
+  animation: flow-dash 1.6s linear infinite;
 }

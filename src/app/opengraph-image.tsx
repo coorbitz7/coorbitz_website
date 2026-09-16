@@ -1,5 +1,6 @@
 import { ImageResponse } from "next/og";
 import { siteConfig } from "@/data/site";
+import { MARK_VIEWBOX, markColorsDark, markSegments } from "@/lib/brand-mark";
 
 export const alt = `${siteConfig.name} — ${siteConfig.tagline}`;
 export const size = { width: 1200, height: 630 };
@@ -14,36 +15,41 @@ export default function OpengraphImage() {
           height: "100%",
           display: "flex",
           flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          background: "linear-gradient(135deg, #0F172A 0%, #1E1B4B 100%)",
+          justifyContent: "space-between",
+          padding: 72,
+          background: "#0b1e33",
           color: "#ffffff",
-          fontFamily: "Arial, Helvetica, sans-serif",
+          fontFamily: "Georgia, 'Times New Roman', serif",
         }}
       >
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            width: 96,
-            height: 96,
-            borderRadius: 24,
-            background: "linear-gradient(135deg, #2563EB 0%, #7C3AED 100%)",
-            marginBottom: 32,
-          }}
-        >
-          <svg width="64" height="64" viewBox="0 0 100 100">
-            <ellipse cx="50" cy="50" rx="34" ry="16" transform="rotate(-20 50 50)" fill="none" stroke="#ffffff" strokeWidth="8" />
-            <circle cx="81.95" cy="38.37" r="13" fill="#ffffff" />
-            <circle cx="18.05" cy="61.63" r="13" fill="#ffffff" />
+        <div style={{ display: "flex", alignItems: "center", gap: 28 }}>
+          <svg width="96" height="96" viewBox={MARK_VIEWBOX}>
+            {markSegments.map((segment, index) => (
+              <g key={index}>
+                <circle cx={segment.node.cx} cy={segment.node.cy} r={segment.node.r} fill={markColorsDark[index]} />
+                <path d={segment.arm} fill="none" stroke={markColorsDark[index]} strokeWidth={segment.armWidth} strokeLinecap="round" />
+              </g>
+            ))}
           </svg>
+          <div style={{ display: "flex", fontSize: 64, fontWeight: 700, letterSpacing: -1.5 }}>
+            {siteConfig.name}
+          </div>
         </div>
-        <div style={{ display: "flex", fontSize: 64, fontWeight: 700, letterSpacing: -1 }}>
-          {siteConfig.name}
-        </div>
-        <div style={{ display: "flex", fontSize: 30, marginTop: 20, color: "#94A3B8" }}>
-          {siteConfig.tagline}
+        <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+          <div style={{ display: "flex", fontSize: 46, fontWeight: 600, lineHeight: 1.15, maxWidth: 980 }}>
+            {siteConfig.tagline}
+          </div>
+          <div
+            style={{
+              display: "flex",
+              fontSize: 22,
+              color: "#9fc4e0",
+              fontFamily: "Menlo, Consolas, monospace",
+              letterSpacing: 2,
+            }}
+          >
+            SOFTWARE · AI · AUTOMATION · CHICAGO · MEHSANA
+          </div>
         </div>
       </div>
     ),

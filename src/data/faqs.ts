@@ -5,38 +5,38 @@ export type Faq = {
 
 export const faqs: Faq[] = [
   {
-    question: "What industries does Coorbitz work with?",
+    question: "What does it cost to work with you?",
     answer:
-      "We work across healthcare, finance, manufacturing, retail, e-commerce, logistics, real estate, and more — plus startups and enterprises at every stage. See our Industries page for details on each sector.",
+      "It depends on scope, and we won't guess before understanding the problem. After a first conversation we'll tell you whether it looks like a small fixed-scope project, a phased build or an ongoing engagement, with a range for each before you commit to anything.",
   },
   {
-    question: "How long does a typical project take?",
+    question: "How long does a project take?",
     answer:
-      "A focused MVP typically takes 6–10 weeks. Larger platforms or AI integrations usually run 3–6 months. We scope exact timelines during the discovery call based on your specific requirements.",
+      "Small websites and automations are usually a matter of weeks; platforms and AI systems take months and are delivered in stages so you get something useful early. We agree a realistic plan in the Architect step rather than promising a date on day one.",
   },
   {
-    question: "Do you work with startups or only enterprises?",
+    question: "Do you work with small businesses, or only larger companies?",
     answer:
-      "Both. We have dedicated engagement models for early-stage startups (fixed-scope MVPs) and enterprises (dedicated teams, SOW-based delivery, and staff augmentation).",
+      "Mostly startups and growing businesses, plus the internal systems that run our parent company's trading operations. If you've outgrown spreadsheets but aren't ready for enterprise software, that's the work we know best.",
   },
   {
-    question: "Where is your team located?",
+    question: "Can you add AI to something we already use?",
     answer:
-      "Coorbitz is headquartered in Chicago, Illinois, with our primary development office in Mehsana, Gujarat, India. Clients get US-based account management with a global engineering team.",
+      "Yes, and that's most of our AI work. We integrate with your existing products, databases and workflows rather than replacing them, and we'll tell you honestly when a simpler, non-AI approach will do the job.",
   },
   {
-    question: "Can you integrate AI into our existing product?",
+    question: "Where is your team?",
     answer:
-      "Yes — AI integration into existing platforms is one of our most common engagements, from adding LLM-powered features to building fully autonomous AI agents on top of your current systems.",
+      "Coorbitz is the technology brand of Coordinatez, headquartered in Chicago, Illinois, with our engineering team in Mehsana, Gujarat, India. We work across US and Indian hours.",
   },
   {
-    question: "What does the engagement process look like?",
+    question: "Who owns the code and the accounts?",
     answer:
-      "Discovery call, technical & design scoping, proposal and timeline, then delivery in agile sprints with weekly demos. You'll have a dedicated point of contact throughout.",
+      "You do. Source code, hosting, domains and third-party accounts are set up in your name from the start, so you're never dependent on us to keep the lights on.",
   },
   {
-    question: "Do you provide ongoing support after launch?",
+    question: "What happens after launch?",
     answer:
-      "Yes, we offer monthly retainer plans for maintenance, monitoring, and feature iteration after your initial launch.",
+      "We stay on to monitor, fix and improve, either as a support arrangement or as the next stage of the build. Nothing goes live without documentation and a proper handover.",
   },
 ];

@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { Mail, Phone, MapPin } from "lucide-react";
 import { Container } from "@/components/shared/container";
 import { Logo } from "@/components/shared/logo";
 import { NewsletterForm } from "@/components/layout/newsletter-form";
@@ -15,17 +14,14 @@ const socialLinks = [
   { href: siteConfig.social.github, label: "GitHub", Icon: GitHubIcon },
 ];
 
-function FooterColumn({ title, links }: { title: string; links: { label: string; href: string }[] }) {
+function LinkColumn({ title, links }: { title: string; links: { label: string; href: string }[] }) {
   return (
     <div>
-      <h3 className="text-sm font-semibold">{title}</h3>
-      <ul className="mt-4 space-y-3">
+      <h3 className="eyebrow text-muted-foreground">{title}</h3>
+      <ul className="mt-4 space-y-2.5">
         {links.map((link) => (
           <li key={link.href}>
-            <Link
-              href={link.href}
-              className="text-sm text-muted-foreground transition-colors hover:text-primary"
-            >
+            <Link href={link.href} className="text-sm text-foreground/80 transition-colors hover:text-primary">
               {link.label}
             </Link>
           </li>
@@ -36,99 +32,100 @@ function FooterColumn({ title, links }: { title: string; links: { label: string;
 }
 
 export function Footer() {
+  const { headquarters, development } = siteConfig.locations;
   return (
-    <footer className="border-t bg-muted/30">
-      <Container className="section-y">
-        <div className="grid gap-12 lg:grid-cols-[1.4fr_1fr_1fr_1fr_1.2fr]">
-          <div>
-            <Link href="/" aria-label="Coorbitz home">
+    <footer className="border-t bg-card">
+      <Container className="py-16">
+        <div className="grid gap-12 lg:grid-cols-12 lg:gap-10">
+          <div className="lg:col-span-5">
+            <Link href="/" aria-label="Coorbitz home" className="inline-block">
               <Logo />
             </Link>
-            <p className="mt-4 max-w-xs text-sm text-muted-foreground">{siteConfig.tagline}</p>
-            <div className="mt-6 flex gap-3">
-              {socialLinks.map(({ href, label, Icon }) => (
-                <a
-                  key={label}
-                  href={href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={label}
-                  className="flex size-9 items-center justify-center rounded-full border text-muted-foreground transition-colors hover:border-primary hover:text-primary"
-                >
-                  <Icon className="size-4" />
-                </a>
+            <p className="mt-5 max-w-sm text-sm leading-relaxed text-muted-foreground">{siteConfig.description}</p>
+            <p className="mt-3 text-xs text-muted-foreground">{siteConfig.parentCompany.relationshipStatement}</p>
+
+            <dl className="mt-8 grid gap-6 text-sm sm:grid-cols-2">
+              {[development, headquarters].map((location) => (
+                <div key={location.label}>
+                  <dt className="eyebrow text-muted-foreground">
+                    {location.company} <span aria-hidden>·</span> {location.label}
+                  </dt>
+                  <dd className="mt-2 text-foreground/80">
+                    {location.city}, {location.country}
+                  </dd>
+                  <dd className="text-muted-foreground">
+                    {location.addressLines.map((line) => (
+                      <span key={line} className="block">
+                        {line}
+                      </span>
+                    ))}
+                  </dd>
+                </div>
               ))}
-            </div>
+            </dl>
           </div>
 
-          <FooterColumn title="Services" links={footerNav.services} />
-          <FooterColumn title="Company" links={footerNav.company} />
-          <FooterColumn title="Resources" links={footerNav.resources} />
+          <div className="lg:col-span-2">
+            <LinkColumn title="Services" links={footerNav.services} />
+          </div>
+          <div className="lg:col-span-2">
+            <LinkColumn title="Company" links={footerNav.company} />
+          </div>
 
-          <div>
-            <h3 className="text-sm font-semibold">Stay Updated</h3>
-            <p className="mt-4 text-sm text-muted-foreground">
-              Product news, AI insights, and case studies — no spam.
-            </p>
-            <div className="mt-4">
-              <NewsletterForm />
-            </div>
-            <ul className="mt-6 space-y-3 text-sm text-muted-foreground">
-              <li className="flex items-start gap-2">
-                <MapPin className="mt-0.5 size-4 shrink-0 text-primary" />
-                <span>
-                  <span className="block text-xs font-medium text-foreground/60">
-                    {siteConfig.locations.development.company}
-                  </span>
-                  {siteConfig.locations.development.city}, {siteConfig.locations.development.country}
-                </span>
-              </li>
-              <li className="flex items-start gap-2">
-                <MapPin className="mt-0.5 size-4 shrink-0 text-primary" />
-                <span>
-                  <span className="block text-xs font-medium text-foreground/60">
-                    {siteConfig.locations.headquarters.company} (Headquarters)
-                  </span>
-                  {siteConfig.locations.headquarters.city}, {siteConfig.locations.headquarters.country}
-                </span>
-              </li>
-              <li className="flex items-center gap-2">
-                <Phone className="size-4 shrink-0 text-primary" />
-                <a href={`tel:${siteConfig.phone.us}`} className="hover:text-primary">
-                  {siteConfig.phone.us}
-                </a>
-              </li>
-              <li className="flex items-center gap-2">
-                <Mail className="size-4 shrink-0 text-primary" />
-                <a href={`mailto:${siteConfig.email.contact}`} className="hover:text-primary">
+          <div className="lg:col-span-3">
+            <h3 className="eyebrow text-muted-foreground">Contact</h3>
+            <ul className="mt-4 space-y-2.5 text-sm">
+              <li>
+                <a href={`mailto:${siteConfig.email.contact}`} className="text-foreground/80 hover:text-primary">
                   {siteConfig.email.contact}
                 </a>
               </li>
+              <li>
+                <a href={`tel:${siteConfig.phone.us.replace(/[^+\d]/g, "")}`} className="text-foreground/80 hover:text-primary">
+                  {siteConfig.phone.us} <span className="text-muted-foreground">(US)</span>
+                </a>
+              </li>
+              <li>
+                <a href={`tel:${siteConfig.phone.india.replace(/[^+\d]/g, "")}`} className="text-foreground/80 hover:text-primary">
+                  {siteConfig.phone.india} <span className="text-muted-foreground">(India)</span>
+                </a>
+              </li>
             </ul>
+            <ul className="mt-6 flex gap-2" aria-label="Social profiles">
+              {socialLinks.map(({ href, label, Icon }) => (
+                <li key={label}>
+                  <a
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={label}
+                    className="flex size-9 items-center justify-center rounded-md border text-muted-foreground transition-colors hover:border-primary hover:text-primary"
+                  >
+                    <Icon className="size-4" />
+                  </a>
+                </li>
+              ))}
+            </ul>
+            <div className="mt-8">
+              <p className="mb-2 text-xs text-muted-foreground">Occasional notes on what we’re building. No spam.</p>
+              <NewsletterForm />
+            </div>
           </div>
         </div>
 
-        <div className="mt-12 border-t pt-6 text-center sm:text-left">
-          <p className="text-xs text-muted-foreground">
-            {siteConfig.parentCompany.relationshipStatement}
-          </p>
-        </div>
-
-        <div className="mt-6 flex flex-col items-center justify-between gap-4 sm:flex-row">
-          <p className="text-sm text-muted-foreground">
+        <div className="mt-14 flex flex-col gap-3 border-t pt-6 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
+          <p>
             © {new Date().getFullYear()} {siteConfig.name}. All rights reserved.
           </p>
-          <div className="flex gap-6">
+          <ul className="flex gap-6">
             {footerNav.legal.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="text-sm text-muted-foreground hover:text-primary"
-              >
-                {link.label}
-              </Link>
+              <li key={link.href}>
+                <Link href={link.href} className="hover:text-primary">
+                  {link.label}
+                </Link>
+              </li>
             ))}
-          </div>
+          </ul>
         </div>
       </Container>
     </footer>

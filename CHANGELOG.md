@@ -2,6 +2,45 @@
 
 All notable changes to this project are documented in this file.
 
+## [1.1.0] — 2026-09-16
+
+Design and content overhaul: make the site read as a real engineering company, not a template.
+
+### Added
+
+- New brand mark (five-node network) shared across the logo, favicon, Apple icon, Open Graph
+  image and `public/logo.svg` via `src/lib/brand-mark.ts`.
+- Interactive hero with a lazy-loaded React Three Fiber network scene (desktop only, WebGL and
+  reduced-motion aware) and a static SVG fallback.
+- Services explorer (keyboard-navigable tabs with per-service schematics), seven-step
+  "How we build" flow with auto-advance, and an animated system-architecture diagram.
+- Work page (`/work`) describing real systems with names withheld and no invented outcomes.
+- Magnetic CTAs, word-by-word headline reveal, sliding nav underline; all animation honors
+  `prefers-reduced-motion` via a site-wide `MotionConfig`.
+- Skip-to-content link.
+
+### Changed
+
+- Palette rebuilt from the mark (navy → sky); purple removed everywhere. Radius reduced,
+  glassmorphism and gradient blobs removed, rounded-card grids replaced with ruled, editorial
+  layouts.
+- Typography: Roboto Slab headings (matching the wordmark), IBM Plex Sans body, IBM Plex Mono
+  labels.
+- Services consolidated from 14 to 6; industries rewritten as 7 we can actually speak to;
+  every page rewritten in plain language with no unverifiable claims.
+- Navigation restructured (Services, Industries, Work, About, Insights, Contact; "Start a
+  project" CTA); footer simplified.
+- Contact form fields: name, company, work email, project type, description, optional budget
+  and timeline.
+- Google Maps iframes replaced by links (lighter, no third-party frames).
+- `tsconfig.json` and the lint script scoped to this app so sibling project folders in the
+  workspace no longer break type-checking.
+
+### Removed
+
+- Placeholder testimonials, statistics, sample blog posts, mission/vision boilerplate and
+  unverified careers benefits.
+
 ## [1.0.0] — 2026-07-18
 
 Initial production release.

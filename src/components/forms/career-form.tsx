@@ -104,7 +104,7 @@ export function CareerForm({ defaultPosition }: { defaultPosition?: string }) {
     // react-hook-form's handleSubmit() only invokes onSubmit on the browser's submit event, never
     // during render, so onSubmit reading formRenderedAtRef here is safe despite the static lint check.
     // eslint-disable-next-line react-hooks/refs
-    <form onSubmit={handleSubmit(onSubmit)} noValidate className="rounded-2xl border bg-card p-6 shadow-sm sm:p-8">
+    <form onSubmit={handleSubmit(onSubmit)} noValidate className="rounded-lg border bg-card p-6 sm:p-8">
       <HoneypotField {...register("website")} />
 
       <FieldGroup>
@@ -151,24 +151,25 @@ export function CareerForm({ defaultPosition }: { defaultPosition?: string }) {
           </Field>
         </div>
 
-        <Field data-invalid={!!resumeError}>
+        <Field data-invalid={!!resumeError} className="relative">
           <FieldLabel htmlFor="career-resume">Resume (PDF or Word, max 5MB)</FieldLabel>
           <label
             htmlFor="career-resume"
-            className="flex cursor-pointer items-center gap-3 rounded-lg border border-dashed px-4 py-3 text-sm text-muted-foreground hover:border-primary hover:text-primary"
+            className="flex cursor-pointer items-center gap-3 rounded-lg border border-dashed px-4 py-3 text-sm text-muted-foreground transition-colors hover:border-primary hover:text-primary group-has-[input:focus-visible]/field:border-primary group-has-[input:focus-visible]/field:ring-2 group-has-[input:focus-visible]/field:ring-ring/50"
           >
             {resumeFile ? <FileText className="size-4" /> : <Upload className="size-4" />}
             {resumeFile ? resumeFile.name : "Click to upload your resume"}
           </label>
+          {/* Inline styles: the Field wrapper sizes descendant inputs with a selector that beats any utility class. */}
           <input
             id="career-resume"
             type="file"
             accept=".pdf,.doc,.docx"
-            className="sr-only"
             onChange={(e) => {
               setResumeFile(e.target.files?.[0] ?? null);
               setResumeError(null);
             }}
+            style={{ position: "absolute", left: 0, top: 0, width: 1, height: 1, opacity: 0, overflow: "hidden" }}
           />
           <FieldError errors={[resumeError ? { message: resumeError } : undefined]} />
         </Field>
@@ -186,7 +187,7 @@ export function CareerForm({ defaultPosition }: { defaultPosition?: string }) {
 
         <TurnstileWidget onVerify={handleTurnstileVerify} onExpire={handleTurnstileExpire} />
 
-        <Button type="submit" size="lg" className="rounded-full" disabled={status === "loading"}>
+        <Button type="submit" size="lg" className="h-11 px-6" disabled={status === "loading"}>
           <AnimatePresence mode="wait" initial={false}>
             {status === "loading" ? (
               <motion.span key="loading" className="flex items-center gap-2">

@@ -17,14 +17,37 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Field, FieldLabel, FieldError, FieldGroup } from "@/components/ui/field";
+import { Field, FieldLabel, FieldError, FieldGroup, FieldDescription } from "@/components/ui/field";
 import { TurnstileWidget } from "@/components/shared/turnstile-widget";
 import { HoneypotField } from "@/components/forms/honeypot-field";
 import { FormSuccessCard } from "@/components/forms/form-success-card";
 import { useAntiSpamGuard, turnstileEnabled } from "@/hooks/use-anti-spam-guard";
 import { contactSchema, failsTimeTrap, type ContactFormValues } from "@/lib/validations";
-import { countryOptions, serviceInterestOptions } from "@/lib/form-options";
+import { projectTypeOptions, budgetOptions, timelineOptions } from "@/lib/form-options";
 import { siteConfig } from "@/data/site";
+
+// Maps a `?service=` query value (a service title) onto the closest project-type option.
+function projectTypeForService(service: string): string | undefined {
+  const value = service.toLowerCase();
+  if (value.includes("agent") || value.includes("automation")) return projectTypeOptions[3];
+  if (value.includes("machine") || value.includes("ai")) return projectTypeOptions[2];
+  if (value.includes("web")) return projectTypeOptions[1];
+  if (value.includes("data")) return projectTypeOptions[4];
+  if (value.includes("digital")) return projectTypeOptions[5];
+  if (value.includes("software")) return projectTypeOptions[0];
+  return undefined;
+}
+
+const emptyValues: ContactFormValues = {
+  name: "",
+  company: "",
+  email: "",
+  projectType: "",
+  details: "",
+  budget: "",
+  timeline: "",
+  website: "",
+};
 
 export function ContactForm() {
   const searchParams = useSearchParams();
@@ -41,44 +64,28 @@ export function ContactForm() {
     formState: { errors },
   } = useForm<ContactFormValues>({
     resolver: zodResolver(contactSchema),
-    defaultValues: {
-      company: "",
-      country: "",
-      serviceInterested: "",
-      website: "",
-    },
+    defaultValues: emptyValues,
   });
 
   useEffect(() => {
     const service = searchParams.get("service");
     const industry = searchParams.get("industry");
-    if (service && serviceInterestOptions.includes(service)) {
-      setValue("serviceInterested", service);
+    if (service) {
+      const projectType = projectTypeForService(service);
+      if (projectType) setValue("projectType", projectType);
+      setValue("details", `We're interested in ${service}. `);
     }
     if (industry) {
-      setValue("projectDetails", `I'm interested in solutions for the ${industry} industry. `);
+      setValue("details", `We're a ${industry.toLowerCase()} business. `);
     }
   }, [searchParams, setValue]);
-
-  function resetForm() {
-    reset({
-      name: "",
-      company: "",
-      email: "",
-      phone: "",
-      country: "",
-      serviceInterested: "",
-      projectDetails: "",
-      website: "",
-    });
-  }
 
   async function onSubmit(data: ContactFormValues) {
     // Honeypot filled in, or submitted implausibly fast — silently "succeed" without actually
     // sending, so bots aren't tipped off and don't burn the Formspree monthly submission quota.
     if (data.website || failsTimeTrap(formRenderedAtRef.current)) {
       setStatus("success");
-      resetForm();
+      reset(emptyValues);
       return;
     }
 
@@ -96,12 +103,12 @@ export function ContactForm() {
           name: data.name,
           company: data.company,
           email: data.email,
-          phone: data.phone,
-          country: data.country,
-          service_interested: data.serviceInterested,
-          message: data.projectDetails,
+          project_type: data.projectType,
+          budget: data.budget,
+          timeline: data.timeline,
+          message: data.details,
           _replyto: data.email,
-          _subject: `New inquiry from ${data.name}${data.company ? ` (${data.company})` : ""}`,
+          _subject: `Project inquiry from ${data.name}${data.company ? ` (${data.company})` : ""}`,
           ...(turnstileToken ? { "cf-turnstile-response": turnstileToken } : {}),
         }),
       });
@@ -113,7 +120,7 @@ export function ContactForm() {
       }
 
       setStatus("success");
-      resetForm();
+      reset(emptyValues);
     } catch (error) {
       setStatus("idle");
       toast.error(error instanceof Error ? error.message : "Something went wrong. Please try again.");
@@ -123,9 +130,9 @@ export function ContactForm() {
   if (status === "success") {
     return (
       <FormSuccessCard
-        title="Message Sent!"
-        description="Thanks for reaching out — a member of our team will get back to you within one business day."
-        buttonLabel="Send Another Message"
+        title="Thanks — we've got it."
+        description="A person will read this and reply within two business days, usually with a few questions."
+        buttonLabel="Send another message"
         onReset={() => setStatus("idle")}
       />
     );
@@ -138,108 +145,139 @@ export function ContactForm() {
       // eslint-disable-next-line react-hooks/refs
       onSubmit={handleSubmit(onSubmit)}
       noValidate
-      className="rounded-2xl border bg-card p-6 shadow-sm sm:p-8"
+      className="rounded-lg border bg-card p-6 sm:p-8"
     >
       <HoneypotField {...register("website")} />
 
       <FieldGroup>
         <div className="grid gap-5 sm:grid-cols-2">
           <Field data-invalid={!!errors.name}>
-            <FieldLabel htmlFor="contact-name">Full Name</FieldLabel>
-            <Input id="contact-name" placeholder="Jane Doe" {...register("name")} />
+            <FieldLabel htmlFor="contact-name">Name</FieldLabel>
+            <Input id="contact-name" autoComplete="name" placeholder="Your name" {...register("name")} />
             <FieldError errors={[errors.name]} />
           </Field>
           <Field data-invalid={!!errors.company}>
-            <FieldLabel htmlFor="contact-company">Company</FieldLabel>
-            <Input id="contact-company" placeholder="Acme Inc." {...register("company")} />
+            <FieldLabel htmlFor="contact-company">
+              Company <span className="font-normal text-muted-foreground">(optional)</span>
+            </FieldLabel>
+            <Input id="contact-company" autoComplete="organization" placeholder="Company name" {...register("company")} />
             <FieldError errors={[errors.company]} />
           </Field>
         </div>
 
-        <div className="grid gap-5 sm:grid-cols-2">
-          <Field data-invalid={!!errors.email}>
-            <FieldLabel htmlFor="contact-email">Email</FieldLabel>
-            <Input id="contact-email" type="email" placeholder="jane@company.com" {...register("email")} />
-            <FieldError errors={[errors.email]} />
-          </Field>
-          <Field data-invalid={!!errors.phone}>
-            <FieldLabel htmlFor="contact-phone">Phone</FieldLabel>
-            <Input id="contact-phone" type="tel" placeholder="+1 312 555 0100" {...register("phone")} />
-            <FieldError errors={[errors.phone]} />
-          </Field>
-        </div>
+        <Field data-invalid={!!errors.email}>
+          <FieldLabel htmlFor="contact-email">Work email</FieldLabel>
+          <Input id="contact-email" type="email" autoComplete="email" placeholder="you@company.com" {...register("email")} />
+          <FieldError errors={[errors.email]} />
+        </Field>
 
-        <div className="grid gap-5 sm:grid-cols-2">
-          <Field data-invalid={!!errors.country}>
-            <FieldLabel htmlFor="contact-country">Country</FieldLabel>
-            <Controller
-              control={control}
-              name="country"
-              render={({ field }) => (
-                <Select value={field.value} onValueChange={field.onChange}>
-                  <SelectTrigger id="contact-country" className="w-full">
-                    <SelectValue placeholder="Select your country" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {countryOptions.map((option) => (
-                      <SelectItem key={option} value={option}>
-                        {option}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              )}
-            />
-            <FieldError errors={[errors.country]} />
-          </Field>
-          <Field data-invalid={!!errors.serviceInterested}>
-            <FieldLabel htmlFor="contact-service">Service Interested</FieldLabel>
-            <Controller
-              control={control}
-              name="serviceInterested"
-              render={({ field }) => (
-                <Select value={field.value} onValueChange={field.onChange}>
-                  <SelectTrigger id="contact-service" className="w-full">
-                    <SelectValue placeholder="Select a service" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {serviceInterestOptions.map((option) => (
-                      <SelectItem key={option} value={option}>
-                        {option}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              )}
-            />
-            <FieldError errors={[errors.serviceInterested]} />
-          </Field>
-        </div>
+        <Field data-invalid={!!errors.projectType}>
+          <FieldLabel htmlFor="contact-project-type">What kind of project is it?</FieldLabel>
+          <Controller
+            control={control}
+            name="projectType"
+            render={({ field }) => (
+              <Select value={field.value} onValueChange={field.onChange}>
+                <SelectTrigger id="contact-project-type" className="w-full">
+                  <SelectValue placeholder="Pick the closest fit" />
+                </SelectTrigger>
+                <SelectContent>
+                  {projectTypeOptions.map((option) => (
+                    <SelectItem key={option} value={option}>
+                      {option}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            )}
+          />
+          <FieldError errors={[errors.projectType]} />
+        </Field>
 
-        <Field data-invalid={!!errors.projectDetails}>
-          <FieldLabel htmlFor="contact-details">Project Details</FieldLabel>
+        <Field data-invalid={!!errors.details}>
+          <FieldLabel htmlFor="contact-details">What are you trying to build or fix?</FieldLabel>
           <Textarea
             id="contact-details"
-            rows={5}
-            placeholder="Tell us about your project, goals, and timeline…"
-            {...register("projectDetails")}
+            rows={6}
+            placeholder="What's slow, manual or broken today? What would “better” look like? Anything about systems you already use helps."
+            {...register("details")}
           />
-          <FieldError errors={[errors.projectDetails]} />
+          <FieldDescription>A couple of sentences is plenty. We’ll ask the rest.</FieldDescription>
+          <FieldError errors={[errors.details]} />
         </Field>
+
+        <div className="grid gap-5 sm:grid-cols-2">
+          <Field data-invalid={!!errors.budget}>
+            <FieldLabel htmlFor="contact-budget">
+              Budget <span className="font-normal text-muted-foreground">(optional)</span>
+            </FieldLabel>
+            <Controller
+              control={control}
+              name="budget"
+              render={({ field }) => (
+                <Select value={field.value ?? ""} onValueChange={field.onChange}>
+                  <SelectTrigger id="contact-budget" className="w-full">
+                    <SelectValue placeholder="If you have a range in mind" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {budgetOptions.map((option) => (
+                      <SelectItem key={option} value={option}>
+                        {option}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
+            />
+            <FieldError errors={[errors.budget]} />
+          </Field>
+          <Field data-invalid={!!errors.timeline}>
+            <FieldLabel htmlFor="contact-timeline">
+              Timeline <span className="font-normal text-muted-foreground">(optional)</span>
+            </FieldLabel>
+            <Controller
+              control={control}
+              name="timeline"
+              render={({ field }) => (
+                <Select value={field.value ?? ""} onValueChange={field.onChange}>
+                  <SelectTrigger id="contact-timeline" className="w-full">
+                    <SelectValue placeholder="When do you need it?" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {timelineOptions.map((option) => (
+                      <SelectItem key={option} value={option}>
+                        {option}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
+            />
+            <FieldError errors={[errors.timeline]} />
+          </Field>
+        </div>
 
         <TurnstileWidget onVerify={handleTurnstileVerify} onExpire={handleTurnstileExpire} />
 
-        <Button type="submit" size="lg" className="rounded-full" disabled={status === "loading"}>
-          <AnimatePresence mode="wait" initial={false}>
-            {status === "loading" ? (
-              <motion.span key="loading" className="flex items-center gap-2">
-                <Loader2 className="size-4 animate-spin" /> Sending…
-              </motion.span>
-            ) : (
-              <motion.span key="idle">Send Message</motion.span>
-            )}
-          </AnimatePresence>
-        </Button>
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <Button type="submit" size="lg" className="h-11 px-6" disabled={status === "loading"}>
+            <AnimatePresence mode="wait" initial={false}>
+              {status === "loading" ? (
+                <motion.span key="loading" className="flex items-center gap-2">
+                  <Loader2 className="size-4 animate-spin" /> Sending…
+                </motion.span>
+              ) : (
+                <motion.span key="idle">Send message</motion.span>
+              )}
+            </AnimatePresence>
+          </Button>
+          <p className="text-xs text-muted-foreground">
+            Prefer email?{" "}
+            <a href={`mailto:${siteConfig.email.contact}`} className="text-primary underline-offset-4 hover:underline">
+              {siteConfig.email.contact}
+            </a>
+          </p>
+        </div>
       </FieldGroup>
     </form>
   );

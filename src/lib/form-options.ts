@@ -1,29 +1,18 @@
-export const countryOptions = [
-  "United States",
-  "Canada",
-  "United Kingdom",
-  "India",
-  "Australia",
-  "Germany",
-  "United Arab Emirates",
-  "Singapore",
-  "Other",
+export const projectTypeOptions = [
+  "Custom software or internal tool",
+  "Website or e-commerce store",
+  "AI feature or model",
+  "AI agents or automation",
+  "Data and analytics",
+  "SEO, analytics or consulting",
+  "Not sure yet",
 ];
 
-export const serviceInterestOptions = [
-  "Web Development",
-  "Mobile App Development",
-  "Custom Software Development",
-  "AI Integration",
-  "Business Automation",
-  "AI Agents",
-  "AI Chatbots",
-  "Data Analysis",
-  "Machine Learning Solutions",
-  "Digital Marketing",
-  "SEO Optimization",
-  "Cloud Solutions",
-  "API Development",
-  "UI/UX Design",
-  "Not Sure Yet",
+export const budgetOptions = ["Under $10k", "$10k – $25k", "$25k – $75k", "$75k+", "Not sure yet"];
+
+export const timelineOptions = [
+  "As soon as possible",
+  "In the next 1–3 months",
+  "Later this year",
+  "Just exploring",
 ];

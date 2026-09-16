@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
 import { Hero } from "@/components/sections/hero";
-import { ServicesOverview } from "@/components/sections/services-overview";
+import { ServicesExplorer } from "@/components/sections/services-explorer";
+import { HowWeBuild } from "@/components/sections/how-we-build";
+import { SystemFlow } from "@/components/sections/system-flow";
 import { IndustriesOverview } from "@/components/sections/industries-overview";
-import { WhyChooseUs } from "@/components/sections/why-choose-us";
-import { ProcessTimeline } from "@/components/sections/process-timeline";
+import { WorkPreview } from "@/components/sections/work-preview";
+import { WorkingWithUs } from "@/components/sections/working-with-us";
 import { TechStackSection } from "@/components/sections/tech-stack-section";
 import { FaqSection } from "@/components/sections/faq-section";
-import { InsightsPreview } from "@/components/sections/insights-preview";
 import { ContactCta } from "@/components/sections/contact-cta";
-import { ParentNetworkStrip } from "@/components/sections/parent-network-strip";
 import { buildMetadata } from "@/lib/seo";
 import { siteConfig } from "@/data/site";
 
@@ -17,17 +17,14 @@ export const metadata: Metadata = buildMetadata({
   description: siteConfig.description,
   path: "/",
   keywords: [
-    "IT company",
-    "AI company",
-    "software development company",
-    "web development company",
-    "AI integration company",
-    "business automation company",
     "custom software development",
-    "AI chatbot development",
-    "data analytics company",
-    "IT company Chicago Illinois",
-    "software development company Mehsana Gujarat",
+    "AI development company",
+    "AI agents and automation",
+    "business automation",
+    "web development company",
+    "data analytics",
+    "software company Chicago Illinois",
+    "software company Mehsana Gujarat",
     "Coorbitz",
   ],
 });
@@ -36,15 +33,15 @@ export default function HomePage() {
   return (
     <>
       <Hero />
-      <ServicesOverview />
+      <ServicesExplorer />
+      <HowWeBuild />
+      <SystemFlow />
       <IndustriesOverview />
-      <WhyChooseUs />
-      <ProcessTimeline />
+      <WorkPreview />
+      <WorkingWithUs />
       <TechStackSection />
       <FaqSection />
-      <InsightsPreview />
       <ContactCta />
-      <ParentNetworkStrip />
     </>
   );
 }

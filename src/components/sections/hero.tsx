@@ -1,87 +1,58 @@
-"use client";
-
 import Link from "next/link";
-import { motion } from "framer-motion";
-import { ArrowRight, Sparkles, BrainCircuit, Bot, Cpu, Workflow } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/shared/container";
-import { GradientBlob } from "@/components/shared/gradient-blob";
+import { Magnetic } from "@/components/shared/magnetic";
+import { SplitReveal } from "@/components/shared/split-reveal";
+import { RevealOnScroll } from "@/components/shared/reveal-on-scroll";
+import { HeroVisual } from "@/components/sections/hero-visual";
 
-const floatingIcons = [
-  { Icon: BrainCircuit, className: "left-[6%] top-[18%]", delay: 0, anim: "animate-float-slow" },
-  { Icon: Bot, className: "right-[8%] top-[12%]", delay: 0.15, anim: "animate-float-slower" },
-  { Icon: Cpu, className: "left-[12%] bottom-[16%]", delay: 0.3, anim: "animate-float-slower" },
-  { Icon: Workflow, className: "right-[14%] bottom-[22%]", delay: 0.45, anim: "animate-float-slow" },
-];
+const capabilities = ["Web platforms", "Internal tools", "AI agents", "Data pipelines", "Automation"];
 
 export function Hero() {
   return (
-    <section className="relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-brand-radial" aria-hidden />
-      <GradientBlob className="left-[-10%] top-[-10%] size-[28rem] bg-primary/40" />
-      <GradientBlob className="right-[-12%] top-[10%] size-[24rem] bg-secondary/40" />
-      <GradientBlob className="bottom-[-15%] left-[30%] size-[26rem] bg-brand-accent/30" />
+    <section className="relative overflow-hidden border-b">
+      <div aria-hidden className="grid-paper absolute inset-0" />
+      <Container className="relative grid items-center gap-12 pb-16 pt-12 lg:grid-cols-12 lg:gap-8 lg:pb-24 lg:pt-16">
+        <div className="lg:col-span-6">
+          <p className="eyebrow">Software · AI · Automation</p>
+          <h1 className="mt-5 font-heading text-[2.6rem] font-semibold leading-[1.05] tracking-tight sm:text-5xl lg:text-[3.4rem] xl:text-[3.9rem]">
+            <SplitReveal text="Custom software, AI and automation, built for how your business actually works." />
+          </h1>
+          <RevealOnScroll delay={0.35} y={12}>
+            <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground">
+              Coorbitz is the software and AI brand of Coordinatez, with teams in Chicago and
+              Mehsana. We design and build web platforms, internal tools, AI agents and data
+              systems for startups and growing companies, and we stay on to run them.
+            </p>
+          </RevealOnScroll>
+          <RevealOnScroll delay={0.5} y={12} className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
+            <Magnetic>
+              <Button asChild size="lg" className="h-11 px-6 text-base">
+                <Link href="/contact">
+                  Start a project <ArrowRight className="size-4" />
+                </Link>
+              </Button>
+            </Magnetic>
+            <Button asChild size="lg" variant="outline" className="h-11 px-6 text-base">
+              <Link href="#how-we-build">See how we build</Link>
+            </Button>
+          </RevealOnScroll>
+          <RevealOnScroll delay={0.65} y={8}>
+            <ul className="mt-10 flex flex-wrap gap-x-5 gap-y-2 font-mono text-xs text-muted-foreground">
+              {capabilities.map((item) => (
+                <li key={item} className="flex items-center gap-2">
+                  <span aria-hidden className="size-1.5 rounded-full bg-brand-sky" />
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </RevealOnScroll>
+        </div>
 
-      {floatingIcons.map(({ Icon, className, delay, anim }, index) => (
-        <motion.div
-          key={index}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: delay + 0.6, duration: 0.8 }}
-          className={`absolute hidden size-14 items-center justify-center rounded-2xl glass shadow-lg lg:flex ${className} ${anim}`}
-          aria-hidden
-        >
-          <Icon className="size-6 text-primary" />
-        </motion.div>
-      ))}
-
-      <Container className="relative section-y flex flex-col items-center pt-28 text-center sm:pt-36">
-        <motion.span
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-sm font-medium text-primary"
-        >
-          <Sparkles className="size-4" /> IT Services &amp; AI Solutions
-        </motion.span>
-
-        <motion.h1
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-          className="mt-6 max-w-4xl text-balance text-4xl font-bold tracking-tight sm:text-6xl lg:text-7xl"
-        >
-          We build the{" "}
-          <span className="text-gradient-brand">software and AI</span> your business
-          runs on
-        </motion.h1>
-
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="mt-6 max-w-2xl text-balance text-lg text-muted-foreground sm:text-xl"
-        >
-          From web and mobile platforms to automation and AI agents, Coorbitz partners
-          with startups, SMEs, and enterprises to design and ship software that holds up
-          in production — not just in a demo.
-        </motion.p>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="mt-10 flex flex-col gap-4 sm:flex-row"
-        >
-          <Button asChild size="lg" className="rounded-full px-8 text-base">
-            <Link href="/contact">
-              Get Free Consultation <ArrowRight className="size-4" />
-            </Link>
-          </Button>
-          <Button asChild size="lg" variant="outline" className="rounded-full px-8 text-base">
-            <Link href="/services">Our Services</Link>
-          </Button>
-        </motion.div>
+        <div className="lg:col-span-6">
+          <HeroVisual />
+        </div>
       </Container>
     </section>
   );

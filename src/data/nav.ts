@@ -4,35 +4,32 @@ export type NavItem = {
 };
 
 export const mainNav: NavItem[] = [
-  { label: "Home", href: "/" },
-  { label: "About", href: "/about" },
   { label: "Services", href: "/services" },
   { label: "Industries", href: "/industries" },
-  { label: "Careers", href: "/careers" },
+  { label: "Work", href: "/work" },
+  { label: "About", href: "/about" },
+  { label: "Insights", href: "/insights" },
   { label: "Contact", href: "/contact" },
 ];
 
+export const primaryCta = { label: "Start a project", href: "/contact" };
+
 export const footerNav = {
   services: [
-    { label: "Web Development", href: "/services#web-development" },
-    { label: "Mobile App Development", href: "/services#mobile-app-development" },
-    { label: "AI Integration", href: "/services#ai-integration" },
-    { label: "Business Automation", href: "/services#business-automation" },
-    { label: "AI Agents", href: "/services#ai-agents" },
-    { label: "Cloud Solutions", href: "/services#cloud-solutions" },
+    { label: "AI & Machine Learning", href: "/services#ai-machine-learning" },
+    { label: "AI Agents & Automation", href: "/services#ai-agents-automation" },
+    { label: "Custom Software", href: "/services#custom-software" },
+    { label: "Web & App Development", href: "/services#web-app-development" },
+    { label: "Data & Analytics", href: "/services#data-analytics" },
+    { label: "Digital Solutions", href: "/services#digital-solutions" },
   ],
   company: [
-    { label: "About Us", href: "/about" },
-    { label: "Careers", href: "/careers" },
+    { label: "About", href: "/about" },
+    { label: "Work", href: "/work" },
     { label: "Industries", href: "/industries" },
+    { label: "How we build", href: "/#how-we-build" },
     { label: "Insights", href: "/insights" },
-    { label: "Contact", href: "/contact" },
-  ],
-  resources: [
-    { label: "Insights & Blog", href: "/insights" },
-    { label: "Case Studies", href: "/industries" },
     { label: "Careers", href: "/careers" },
-    { label: "FAQ", href: "/#faq" },
   ],
   legal: [
     { label: "Privacy Policy", href: "/privacy-policy" },

@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { services } from "@/data/services";
 import { industries } from "@/data/industries";
-import { insights } from "@/data/insights";
+import { workItems } from "@/data/work";
 
 type SearchResult = {
   title: string;
@@ -23,23 +23,23 @@ type SearchResult = {
 };
 
 const searchIndex: SearchResult[] = [
-  ...services.map((s) => ({
-    title: s.title,
-    description: s.shortDescription,
-    href: `/services#${s.id}`,
+  ...services.map((service) => ({
+    title: service.title,
+    description: service.shortDescription,
+    href: `/services#${service.id}`,
     group: "Services",
   })),
-  ...industries.map((i) => ({
-    title: i.title,
-    description: i.description,
-    href: `/industries#${i.id}`,
+  ...industries.map((industry) => ({
+    title: industry.title,
+    description: industry.description,
+    href: `/industries#${industry.id}`,
     group: "Industries",
   })),
-  ...insights.map((i) => ({
-    title: i.title,
-    description: i.excerpt,
-    href: `/insights`,
-    group: "Insights",
+  ...workItems.map((item) => ({
+    title: item.title,
+    description: item.summary,
+    href: `/work#${item.id}`,
+    group: "Work",
   })),
 ];
 
@@ -50,21 +50,14 @@ export function SearchDialog() {
   const results = useMemo(() => {
     if (!query.trim()) return [];
     const q = query.toLowerCase();
-    return searchIndex.filter(
-      (item) =>
-        item.title.toLowerCase().includes(q) || item.description.toLowerCase().includes(q)
-    ).slice(0, 8);
+    return searchIndex
+      .filter((item) => item.title.toLowerCase().includes(q) || item.description.toLowerCase().includes(q))
+      .slice(0, 8);
   }, [query]);
 
   return (
     <>
-      <Button
-        variant="ghost"
-        size="icon"
-        aria-label="Search the site"
-        className="rounded-full"
-        onClick={() => setOpen(true)}
-      >
+      <Button variant="ghost" size="icon" aria-label="Search the site" onClick={() => setOpen(true)}>
         <Search className="size-[1.15rem]" />
       </Button>
       <Dialog open={open} onOpenChange={setOpen}>
@@ -73,9 +66,9 @@ export function SearchDialog() {
             <DialogTitle className="sr-only">Search Coorbitz</DialogTitle>
             <Input
               autoFocus
-              placeholder="Search services, industries, insights…"
+              placeholder="Search services, industries, work…"
               value={query}
-              onChange={(e) => setQuery(e.target.value)}
+              onChange={(event) => setQuery(event.target.value)}
               className="border-0 shadow-none focus-visible:ring-0"
             />
           </DialogHeader>
@@ -90,15 +83,11 @@ export function SearchDialog() {
                 key={`${result.group}-${result.title}`}
                 href={result.href}
                 onClick={() => setOpen(false)}
-                className="block rounded-lg px-3 py-2.5 hover:bg-accent"
+                className="block rounded-md px-3 py-2.5 hover:bg-accent"
               >
-                <p className="text-xs font-medium uppercase tracking-wide text-primary">
-                  {result.group}
-                </p>
+                <p className="font-mono text-xs uppercase tracking-wide text-primary">{result.group}</p>
                 <p className="font-medium">{result.title}</p>
-                <p className="line-clamp-1 text-sm text-muted-foreground">
-                  {result.description}
-                </p>
+                <p className="line-clamp-1 text-sm text-muted-foreground">{result.description}</p>
               </Link>
             ))}
           </div>

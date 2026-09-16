@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Roboto_Slab, IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/layout/theme-provider";
+import { MotionProvider } from "@/components/layout/motion-provider";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/sonner";
 import { Navbar } from "@/components/layout/navbar";
@@ -14,14 +15,27 @@ import { AnalyticsScripts } from "@/components/shared/analytics-scripts";
 import { buildMetadata, organizationJsonLd, localBusinessJsonLd, websiteJsonLd } from "@/lib/seo";
 import { siteConfig } from "@/data/site";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+// Roboto Slab matches the slab-serif wordmark in the Coorbitz logo and carries all headings;
+// IBM Plex Sans/Mono give body copy and technical labels a precise, engineered voice.
+const headingFont = Roboto_Slab({
+  variable: "--font-roboto-slab",
   subsets: ["latin"],
+  weight: ["500", "600", "700"],
+  display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const bodyFont = IBM_Plex_Sans({
+  variable: "--font-plex-sans",
   subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  display: "swap",
+});
+
+const monoFont = IBM_Plex_Mono({
+  variable: "--font-plex-mono",
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -48,22 +62,32 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${headingFont.variable} ${bodyFont.variable} ${monoFont.variable} h-full antialiased`}
       suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col">
         <JsonLd data={[organizationJsonLd(), websiteJsonLd(), ...localBusinessJsonLd()]} />
         <AnalyticsScripts />
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-          <TooltipProvider delayDuration={150}>
-            <Navbar />
-            <main className="flex-1">{children}</main>
-            <Footer />
-            <BackToTop />
-            <WhatsAppButton />
-            <CookieConsent />
-            <Toaster position="bottom-right" richColors />
-          </TooltipProvider>
+          <MotionProvider>
+            <TooltipProvider delayDuration={150}>
+              <a
+                href="#main"
+                className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-md focus:bg-primary focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-primary-foreground"
+              >
+                Skip to content
+              </a>
+              <Navbar />
+              <main id="main" className="flex-1">
+                {children}
+              </main>
+              <Footer />
+              <BackToTop />
+              <WhatsAppButton />
+              <CookieConsent />
+              <Toaster position="bottom-right" richColors />
+            </TooltipProvider>
+          </MotionProvider>
         </ThemeProvider>
       </body>
     </html>

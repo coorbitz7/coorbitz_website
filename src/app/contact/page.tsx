@@ -1,37 +1,32 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
-import { MapPin, Clock, Phone, Mail } from "lucide-react";
+import { ArrowUpRight, Clock, Mail, MapPin, Phone } from "lucide-react";
 import { Container } from "@/components/shared/container";
+import { SectionHeading } from "@/components/shared/section-heading";
 import { RevealOnScroll } from "@/components/shared/reveal-on-scroll";
 import { ContactForm } from "@/components/forms/contact-form";
-import { LinkedInIcon, XIcon, FacebookIcon, InstagramIcon, GitHubIcon } from "@/components/shared/social-icons";
 import { siteConfig } from "@/data/site";
 import { buildMetadata, breadcrumbJsonLd, contactPageJsonLd } from "@/lib/seo";
 import { JsonLd } from "@/components/shared/json-ld";
 
 export const metadata: Metadata = buildMetadata({
-  title: "Contact Us",
+  title: "Contact",
   description:
-    "Get in touch with Coorbitz — reach our Chicago headquarters or Mehsana development office, or send us a project inquiry.",
+    "Start a project with Coorbitz. Tell us what's slow, manual or broken and we'll reply with questions, not a sales deck. Offices in Chicago, Illinois and Mehsana, Gujarat.",
   path: "/contact",
-  keywords: [
-    "IT company Chicago Illinois",
-    "software development company Chicago",
-    "AI company Mehsana Gujarat",
-    "contact IT services company",
-    "custom software development company",
-  ],
+  keywords: ["contact Coorbitz", "start a software project", "software company Chicago", "AI development Mehsana Gujarat"],
 });
 
-const socialLinks = [
-  { href: siteConfig.social.linkedin, label: "LinkedIn", Icon: LinkedInIcon },
-  { href: siteConfig.social.twitter, label: "X (Twitter)", Icon: XIcon },
-  { href: siteConfig.social.facebook, label: "Facebook", Icon: FacebookIcon },
-  { href: siteConfig.social.instagram, label: "Instagram", Icon: InstagramIcon },
-  { href: siteConfig.social.github, label: "GitHub", Icon: GitHubIcon },
+const nextSteps = [
+  { title: "We read it properly", text: "A person reads your message, not a routing bot. Expect a reply within two business days." },
+  { title: "A short call", text: "Thirty minutes to understand the problem and the constraints. No slides." },
+  { title: "Options in writing", text: "What we'd build, what we wouldn't, and a range for each option before you commit to anything." },
 ];
 
 export default function ContactPage() {
+  const { headquarters, development } = siteConfig.locations;
+  const tel = (value: string) => value.replace(/[^+\d]/g, "");
+
   return (
     <>
       <JsonLd
@@ -40,105 +35,98 @@ export default function ContactPage() {
           contactPageJsonLd(),
         ]}
       />
-      <section className="py-16 text-center sm:py-20">
+      <section className="border-b py-16 sm:py-20">
         <Container>
-          <RevealOnScroll>
-            <span className="inline-flex rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-sm font-medium text-primary">
-              Get In Touch
-            </span>
-            <h1 className="mx-auto mt-6 max-w-3xl text-balance text-4xl font-bold tracking-tight sm:text-5xl">
-              Let&apos;s Build Something Great Together
-            </h1>
-            <p className="mx-auto mt-5 max-w-2xl text-balance text-lg text-muted-foreground">
-              Tell us about your project and we&apos;ll get back to you within one business day.
-            </p>
-          </RevealOnScroll>
+          <SectionHeading
+            as="h1"
+            eyebrow="Contact"
+            title="Have a problem worth solving?"
+            description="Tell us what's slow, manual or broken. A couple of sentences is enough to start; we'll come back with questions."
+            titleClassName="sm:text-5xl lg:text-[3.25rem]"
+          />
         </Container>
       </section>
 
-      <section className="pb-20 sm:pb-28">
-        <Container className="grid gap-10 lg:grid-cols-[1fr_1.3fr]">
-          <RevealOnScroll className="space-y-6">
-            {Object.values(siteConfig.locations).map((location) => (
-              <div key={location.label} className="overflow-hidden rounded-2xl border bg-card shadow-sm">
-                <iframe
-                  src={location.mapEmbedSrc}
-                  className="h-48 w-full border-0"
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                  title={`Map to Coorbitz ${location.label}`}
-                />
-                <div className="p-5">
-                  <div className="flex items-center gap-2 text-primary">
-                    <MapPin className="size-4" />
-                    <span className="text-sm font-semibold uppercase tracking-wide">
-                      {location.label}
-                    </span>
-                  </div>
-                  <p className="mt-2 font-semibold">{location.company}</p>
-                  <p className="text-sm text-muted-foreground">{location.city}, {location.country}</p>
-                  {location.addressLines.map((line) => (
-                    <p key={line} className="text-sm text-muted-foreground">{line}</p>
-                  ))}
-                </div>
-              </div>
-            ))}
-
-            <div className="rounded-2xl border bg-card p-6 shadow-sm">
-              <div className="flex items-center gap-2 text-primary">
-                <Clock className="size-4" />
-                <span className="text-sm font-semibold uppercase tracking-wide">Business Hours</span>
-              </div>
-              <ul className="mt-3 space-y-1.5 text-sm">
-                {siteConfig.businessHours.map((entry) => (
-                  <li key={entry.days} className="flex justify-between text-muted-foreground">
-                    <span>{entry.days}</span>
-                    <span className="font-medium text-foreground">{entry.hours}</span>
+      <section className="section-y">
+        <Container className="grid gap-12 lg:grid-cols-12 lg:gap-14">
+          <RevealOnScroll className="space-y-10 lg:col-span-5">
+            <div>
+              <h2 className="eyebrow text-muted-foreground">What happens next</h2>
+              <ol className="mt-4 divide-y border-y">
+                {nextSteps.map((step, index) => (
+                  <li key={step.title} className="grid grid-cols-[2rem_1fr] gap-3 py-4">
+                    <span className="font-mono text-xs text-muted-foreground">0{index + 1}</span>
+                    <div>
+                      <h3 className="font-heading text-base font-semibold">{step.title}</h3>
+                      <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{step.text}</p>
+                    </div>
                   </li>
                 ))}
-              </ul>
+              </ol>
             </div>
 
-            <div className="rounded-2xl border bg-card p-6 shadow-sm">
-              <ul className="space-y-3 text-sm">
-                <li className="flex items-center gap-2">
-                  <Mail className="size-4 text-primary" />
+            <div>
+              <h2 className="eyebrow text-muted-foreground">Reach us directly</h2>
+              <ul className="mt-4 space-y-3 text-sm">
+                <li className="flex items-center gap-3">
+                  <Mail className="size-4 text-brand-sky" aria-hidden />
                   <a href={`mailto:${siteConfig.email.contact}`} className="hover:text-primary">
                     {siteConfig.email.contact}
                   </a>
                 </li>
-                <li className="flex items-center gap-2">
-                  <Phone className="size-4 text-primary" />
-                  <a href={`tel:${siteConfig.phone.india}`} className="hover:text-primary">
-                    {siteConfig.phone.india} (India)
+                <li className="flex items-center gap-3">
+                  <Phone className="size-4 text-brand-sky" aria-hidden />
+                  <a href={`tel:${tel(siteConfig.phone.us)}`} className="hover:text-primary">
+                    {siteConfig.phone.us} <span className="text-muted-foreground">(US)</span>
                   </a>
                 </li>
-                <li className="flex items-center gap-2">
-                  <Phone className="size-4 text-primary" />
-                  <a href={`tel:${siteConfig.phone.us}`} className="hover:text-primary">
-                    {siteConfig.phone.us} (US)
+                <li className="flex items-center gap-3">
+                  <Phone className="size-4 text-brand-sky" aria-hidden />
+                  <a href={`tel:${tel(siteConfig.phone.india)}`} className="hover:text-primary">
+                    {siteConfig.phone.india} <span className="text-muted-foreground">(India)</span>
                   </a>
+                </li>
+                <li className="flex items-start gap-3">
+                  <Clock className="mt-0.5 size-4 text-brand-sky" aria-hidden />
+                  <span className="text-muted-foreground">
+                    {siteConfig.businessHours[0].days}, {siteConfig.businessHours[0].hours}
+                  </span>
                 </li>
               </ul>
-              <div className="mt-5 flex gap-3">
-                {socialLinks.map(({ href, label, Icon }) => (
-                  <a
-                    key={label}
-                    href={href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={label}
-                    className="flex size-9 items-center justify-center rounded-full border text-muted-foreground transition-colors hover:border-primary hover:text-primary"
-                  >
-                    <Icon className="size-4" />
-                  </a>
+            </div>
+
+            <div>
+              <h2 className="eyebrow text-muted-foreground">Offices</h2>
+              <ul className="mt-4 grid gap-6 sm:grid-cols-2">
+                {[headquarters, development].map((location) => (
+                  <li key={location.label} className="text-sm">
+                    <p className="font-heading font-semibold">{location.city}</p>
+                    <p className="text-muted-foreground">
+                      {location.company} <span aria-hidden>·</span> {location.label}
+                    </p>
+                    <address className="mt-2 not-italic leading-relaxed text-muted-foreground">
+                      {location.addressLines.map((line) => (
+                        <span key={line} className="block">
+                          {line}
+                        </span>
+                      ))}
+                    </address>
+                    <a
+                      href={location.mapsUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-2 inline-flex items-center gap-1 text-primary underline-offset-4 hover:underline"
+                    >
+                      <MapPin className="size-3.5" aria-hidden /> Map <ArrowUpRight className="size-3" aria-hidden />
+                    </a>
+                  </li>
                 ))}
-              </div>
+              </ul>
             </div>
           </RevealOnScroll>
 
-          <RevealOnScroll delay={0.1}>
-            <Suspense fallback={<div className="h-[600px] rounded-2xl border bg-card shadow-sm" />}>
+          <RevealOnScroll delay={0.1} className="lg:col-span-7">
+            <Suspense fallback={<div className="h-[640px] rounded-lg border bg-card" aria-hidden />}>
               <ContactForm />
             </Suspense>
           </RevealOnScroll>

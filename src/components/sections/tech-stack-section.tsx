@@ -1,31 +1,33 @@
 import { Container } from "@/components/shared/container";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { RevealOnScroll } from "@/components/shared/reveal-on-scroll";
-import { Badge } from "@/components/ui/badge";
 import { techStack } from "@/data/tech-stack";
 
 export function TechStackSection() {
   return (
-    <section className="section-y">
+    <section className="section-y border-b">
       <Container>
         <SectionHeading
+          index="07"
           eyebrow="Technology"
-          title="Our Technology Stack"
-          description="We pick the right tool for the job, backed by teams fluent in every layer of the modern stack."
+          title="The stack we actually work in."
+          description="Nothing on this list is aspirational. Each item is in a system described on the Work page, and we choose the plainest tool that fits before reaching for anything else."
         />
-
-        <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-14 grid gap-x-10 gap-y-8 sm:grid-cols-2 lg:grid-cols-3">
           {techStack.map((group, index) => (
-            <RevealOnScroll key={group.category} delay={(index % 3) * 0.08}>
-              <div className="rounded-2xl border bg-card p-6 shadow-sm">
-                <h3 className="font-semibold text-primary">{group.category}</h3>
-                <div className="mt-4 flex flex-wrap gap-2">
+            <RevealOnScroll key={group.category} delay={(index % 3) * 0.06}>
+              <div className="border-t pt-5">
+                <h3 className="eyebrow text-muted-foreground">{group.category}</h3>
+                <ul className="mt-4 flex flex-wrap gap-2">
                   {group.items.map((item) => (
-                    <Badge key={item} variant="secondary" className="rounded-full px-3 py-1 font-normal">
+                    <li
+                      key={item}
+                      className="rounded-md border bg-card px-2.5 py-1 font-mono text-sm transition-colors hover:border-primary hover:text-primary"
+                    >
                       {item}
-                    </Badge>
+                    </li>
                   ))}
-                </div>
+                </ul>
               </div>
             </RevealOnScroll>
           ))}

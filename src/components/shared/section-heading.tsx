@@ -2,36 +2,47 @@ import { cn } from "@/lib/utils";
 import { RevealOnScroll } from "@/components/shared/reveal-on-scroll";
 
 export function SectionHeading({
+  index,
   eyebrow,
   title,
   description,
-  align = "center",
+  align = "left",
+  as = "h2",
   className,
+  titleClassName,
 }: {
+  /** Section number shown in mono before the eyebrow, e.g. "01". */
+  index?: string;
   eyebrow?: string;
   title: string;
   description?: string;
   align?: "center" | "left";
+  as?: "h1" | "h2";
   className?: string;
+  titleClassName?: string;
 }) {
+  const Heading = as;
   return (
     <RevealOnScroll
-      className={cn(
-        "mx-auto max-w-3xl",
-        align === "center" ? "text-center" : "text-left mx-0",
-        className
-      )}
+      className={cn("max-w-3xl", align === "center" && "mx-auto text-center", className)}
     >
-      {eyebrow && (
-        <span className="inline-flex items-center rounded-full border border-primary/20 bg-primary/5 px-4 py-1 text-xs font-semibold uppercase tracking-wider text-primary">
+      {(index || eyebrow) && (
+        <p className={cn("eyebrow flex items-center gap-3", align === "center" && "justify-center")}>
+          {index && <span className="text-muted-foreground">{index}</span>}
+          {index && eyebrow && <span aria-hidden className="h-px w-6 bg-border" />}
           {eyebrow}
-        </span>
+        </p>
       )}
-      <h2 className="mt-4 text-balance text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">
+      <Heading
+        className={cn(
+          "mt-4 font-heading text-3xl font-semibold leading-[1.1] tracking-tight sm:text-4xl lg:text-[2.75rem]",
+          titleClassName
+        )}
+      >
         {title}
-      </h2>
+      </Heading>
       {description && (
-        <p className="mt-4 text-balance text-lg text-muted-foreground">{description}</p>
+        <p className="mt-5 text-lg leading-relaxed text-muted-foreground">{description}</p>
       )}
     </RevealOnScroll>
   );

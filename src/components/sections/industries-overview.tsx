@@ -3,42 +3,57 @@ import { ArrowRight } from "lucide-react";
 import { Container } from "@/components/shared/container";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { RevealOnScroll } from "@/components/shared/reveal-on-scroll";
-import { Button } from "@/components/ui/button";
 import { industries } from "@/data/industries";
 
 export function IndustriesOverview() {
   return (
-    <section className="section-y bg-muted/30">
-      <Container>
-        <SectionHeading
-          eyebrow="Who We Serve"
-          title="Industries We Work In"
-          description="Deep domain experience across 15 industries — we speak your business language, not just code."
-        />
-
-        <div className="mt-16 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
-          {industries.map((industry, index) => (
-            <RevealOnScroll key={industry.id} delay={(index % 5) * 0.06}>
-              <Link
-                href={`/industries#${industry.id}`}
-                className="group flex flex-col items-center gap-3 rounded-2xl border bg-card p-6 text-center shadow-sm transition-all hover:-translate-y-1 hover:shadow-lg"
-              >
-                <div className="flex size-11 items-center justify-center rounded-xl bg-primary/10 text-primary transition-colors group-hover:bg-gradient-brand group-hover:text-white">
-                  <industry.icon className="size-5" />
-                </div>
-                <span className="text-sm font-medium">{industry.title}</span>
-              </Link>
-            </RevealOnScroll>
-          ))}
-        </div>
-
-        <div className="mt-12 text-center">
-          <Button asChild size="lg" variant="outline" className="rounded-full px-8">
-            <Link href="/industries">
-              Explore All Industries <ArrowRight className="size-4" />
+    <section className="section-y border-b bg-card">
+      <Container className="grid gap-12 lg:grid-cols-12 lg:gap-10">
+        <div className="lg:col-span-4">
+          <SectionHeading
+            index="04"
+            eyebrow="Industries"
+            title="Where we tend to help."
+            description="We don't claim expertise in every sector. These are the kinds of businesses whose problems we've actually worked on, and what that work usually looks like."
+          />
+          <RevealOnScroll delay={0.1}>
+            <Link
+              href="/industries"
+              className="mt-8 inline-flex items-center gap-1.5 text-sm font-medium text-primary underline-offset-4 hover:underline"
+            >
+              Industries in detail <ArrowRight className="size-4" aria-hidden />
             </Link>
-          </Button>
+          </RevealOnScroll>
         </div>
+
+        <RevealOnScroll delay={0.1} className="lg:col-span-8">
+          <ol className="divide-y border-y">
+            {industries.map((industry, index) => (
+              <li key={industry.id} className="grid gap-3 py-6 sm:grid-cols-12 sm:gap-6">
+                <span className="font-mono text-xs text-muted-foreground sm:col-span-1 sm:pt-1.5">0{index + 1}</span>
+                <div className="sm:col-span-4">
+                  <Link
+                    href={`/industries#${industry.id}`}
+                    className="inline-flex items-center gap-2.5 font-heading text-lg font-semibold tracking-tight transition-colors hover:text-primary"
+                  >
+                    <industry.icon className="size-4 shrink-0 text-brand-sky" aria-hidden />
+                    {industry.title}
+                  </Link>
+                </div>
+                <div className="sm:col-span-7">
+                  <p className="text-sm leading-relaxed text-muted-foreground">{industry.description}</p>
+                  <ul className="mt-3 flex flex-wrap gap-1.5" aria-label={`Where we help in ${industry.title}`}>
+                    {industry.examples.map((example) => (
+                      <li key={example} className="rounded-md border bg-background px-2 py-0.5 font-mono text-xs text-muted-foreground">
+                        {example}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </RevealOnScroll>
       </Container>
     </section>
   );

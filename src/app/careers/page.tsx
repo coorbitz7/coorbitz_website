@@ -1,15 +1,5 @@
 import type { Metadata } from "next";
-import {
-  HeartHandshake,
-  GraduationCap,
-  Laptop,
-  TrendingUp,
-  Users,
-  Coffee,
-  MapPin,
-  Briefcase,
-  Clock,
-} from "lucide-react";
+import { Briefcase, Clock, GraduationCap, MapPin } from "lucide-react";
 import { Container } from "@/components/shared/container";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { RevealOnScroll } from "@/components/shared/reveal-on-scroll";
@@ -19,7 +9,6 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { Badge } from "@/components/ui/badge";
 import { CareerForm } from "@/components/forms/career-form";
 import { JsonLd } from "@/components/shared/json-ld";
 import { jobOpenings, internshipInfo } from "@/data/jobs";
@@ -28,66 +17,33 @@ import { buildMetadata, jobPostingJsonLd, breadcrumbJsonLd } from "@/lib/seo";
 export const metadata: Metadata = buildMetadata({
   title: "Careers",
   description:
-    "Join Coorbitz — explore open roles in engineering, AI, design, and sales across our Chicago and Mehsana offices.",
+    "Work with Coorbitz on real client and internal systems from Chicago or Mehsana. Current openings, our internship program and how to apply.",
   path: "/careers",
 });
-
-const benefits = [
-  { icon: HeartHandshake, title: "Health & Wellness", description: "Comprehensive health coverage and wellness stipends." },
-  { icon: TrendingUp, title: "Growth Path", description: "Clear career ladders and quarterly growth conversations." },
-  { icon: Laptop, title: "Hybrid Flexibility", description: "Flexible hybrid schedules across both offices." },
-  { icon: GraduationCap, title: "Learning Budget", description: "Annual budget for courses, books, and conferences." },
-  { icon: Users, title: "Real Ownership", description: "Own features and client relationships from day one." },
-  { icon: Coffee, title: "Great Culture", description: "Regular team events, hackathons, and social offsites." },
-];
 
 export default function CareersPage() {
   return (
     <>
       <JsonLd data={breadcrumbJsonLd([{ name: "Home", path: "/" }, { name: "Careers", path: "/careers" }])} />
-      <section className="py-16 text-center sm:py-20">
+      <section className="border-b py-16 sm:py-20">
         <Container>
-          <RevealOnScroll>
-            <span className="inline-flex rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-sm font-medium text-primary">
-              Careers at Coorbitz
-            </span>
-            <h1 className="mx-auto mt-6 max-w-3xl text-balance text-4xl font-bold tracking-tight sm:text-5xl">
-              Build Your Career Around Real Impact
-            </h1>
-            <p className="mx-auto mt-5 max-w-2xl text-balance text-lg text-muted-foreground">
-              We&apos;re a team of engineers, designers, and strategists solving real problems for
-              real clients — across Chicago and Mehsana. Come build with us.
-            </p>
-          </RevealOnScroll>
+          <SectionHeading
+            as="h1"
+            eyebrow="Careers"
+            title="Build real systems with a small team."
+            description="We're engineers and designers in Chicago and Mehsana working on client systems and our own internal platforms. The work is production software, not busywork, and you'll be trusted with real responsibility early."
+            titleClassName="sm:text-5xl lg:text-[3.25rem]"
+          />
         </Container>
       </section>
 
-      {/* Why work with us / Benefits */}
-      <section className="section-y bg-muted/30 pt-0">
-        <Container>
-          <SectionHeading eyebrow="Why Work With Us" title="Benefits & Perks" />
-          <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {benefits.map((benefit, index) => (
-              <RevealOnScroll key={benefit.title} delay={(index % 3) * 0.08}>
-                <div className="flex h-full gap-4 rounded-2xl border bg-card p-6 shadow-sm">
-                  <benefit.icon className="size-6 shrink-0 text-primary" />
-                  <div>
-                    <h3 className="font-semibold">{benefit.title}</h3>
-                    <p className="mt-1.5 text-sm text-muted-foreground">{benefit.description}</p>
-                  </div>
-                </div>
-              </RevealOnScroll>
-            ))}
+      <section className="section-y border-b">
+        <Container className="grid gap-12 lg:grid-cols-12">
+          <div className="lg:col-span-4">
+            <SectionHeading eyebrow="Open roles" title="Current openings." description="Roles are added here as they open. If nothing fits but you think you should be here, apply anyway and say why." />
           </div>
-        </Container>
-      </section>
-
-      {/* Current Openings */}
-      <section className="section-y">
-        <Container className="mx-auto max-w-3xl">
-          <SectionHeading eyebrow="Join Our Team" title="Current Openings" />
-          <RevealOnScroll className="mt-14">
-            <Accordion type="single" collapsible className="w-full">
+          <RevealOnScroll delay={0.1} className="lg:col-span-8">
+            <Accordion type="single" collapsible className="w-full border-t">
               {jobOpenings.map((job) => (
                 <AccordionItem key={job.id} value={job.id}>
                   <JsonLd
@@ -99,38 +55,44 @@ export default function CareersPage() {
                       employmentType: job.type,
                     })}
                   />
-                  <AccordionTrigger className="text-left">
+                  <AccordionTrigger className="py-5 text-left hover:no-underline">
                     <div>
-                      <p className="font-semibold">{job.title}</p>
-                      <div className="mt-1.5 flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground">
+                      <p className="font-heading text-lg font-semibold">{job.title}</p>
+                      <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 font-mono text-xs text-muted-foreground">
                         <span className="flex items-center gap-1">
-                          <Briefcase className="size-3.5" /> {job.department}
+                          <Briefcase className="size-3.5" aria-hidden /> {job.department}
                         </span>
                         <span className="flex items-center gap-1">
-                          <MapPin className="size-3.5" /> {job.location}
+                          <MapPin className="size-3.5" aria-hidden /> {job.location}
                         </span>
                         <span className="flex items-center gap-1">
-                          <Clock className="size-3.5" /> {job.type}
+                          <Clock className="size-3.5" aria-hidden /> {job.type}
                         </span>
                       </div>
                     </div>
                   </AccordionTrigger>
-                  <AccordionContent>
-                    <p className="text-muted-foreground">{job.description}</p>
-                    <p className="mt-4 text-sm font-semibold">Responsibilities</p>
-                    <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-muted-foreground">
-                      {job.responsibilities.map((r) => (
-                        <li key={r}>{r}</li>
-                      ))}
-                    </ul>
-                    <p className="mt-4 text-sm font-semibold">Requirements</p>
-                    <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-muted-foreground">
-                      {job.requirements.map((r) => (
-                        <li key={r}>{r}</li>
-                      ))}
-                    </ul>
-                    <a href="#apply" className="mt-4 inline-block">
-                      <Badge className="rounded-full px-4 py-1.5">Apply for this role</Badge>
+                  <AccordionContent className="pb-6">
+                    <p className="leading-relaxed text-muted-foreground">{job.description}</p>
+                    <div className="mt-5 grid gap-6 sm:grid-cols-2">
+                      <div>
+                        <p className="eyebrow text-muted-foreground">Responsibilities</p>
+                        <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-muted-foreground">
+                          {job.responsibilities.map((item) => (
+                            <li key={item}>{item}</li>
+                          ))}
+                        </ul>
+                      </div>
+                      <div>
+                        <p className="eyebrow text-muted-foreground">Requirements</p>
+                        <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-muted-foreground">
+                          {job.requirements.map((item) => (
+                            <li key={item}>{item}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                    <a href="#apply" className="mt-5 inline-block text-sm font-medium text-primary underline-offset-4 hover:underline">
+                      Apply for this role
                     </a>
                   </AccordionContent>
                 </AccordionItem>
@@ -140,33 +102,37 @@ export default function CareersPage() {
         </Container>
       </section>
 
-      {/* Internships */}
-      <section className="section-y bg-muted/30">
-        <Container className="mx-auto max-w-3xl text-center">
-          <RevealOnScroll>
-            <GraduationCap className="mx-auto size-10 text-primary" />
-            <h2 className="mt-4 text-2xl font-bold tracking-tight sm:text-3xl">
-              {internshipInfo.title}
-            </h2>
-            <p className="mt-4 text-muted-foreground">{internshipInfo.description}</p>
-            <div className="mt-5 flex flex-wrap justify-center gap-2">
-              {internshipInfo.tracks.map((track) => (
-                <Badge key={track} variant="secondary" className="rounded-full font-normal">
-                  {track}
-                </Badge>
-              ))}
+      <section className="section-y border-b bg-card">
+        <Container className="grid gap-12 lg:grid-cols-12">
+          <div className="lg:col-span-4">
+            <SectionHeading eyebrow="Internships" title={internshipInfo.title} />
+          </div>
+          <RevealOnScroll delay={0.1} className="lg:col-span-8">
+            <div className="flex gap-4">
+              <GraduationCap className="mt-1 size-6 shrink-0 text-brand-sky" aria-hidden />
+              <div>
+                <p className="leading-relaxed text-muted-foreground">{internshipInfo.description}</p>
+                <ul className="mt-5 flex flex-wrap gap-2">
+                  {internshipInfo.tracks.map((track) => (
+                    <li key={track} className="rounded-md border bg-background px-2.5 py-1 font-mono text-sm text-muted-foreground">
+                      {track}
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
           </RevealOnScroll>
         </Container>
       </section>
 
-      {/* Application Form */}
       <section id="apply" className="section-y scroll-mt-20">
-        <Container className="mx-auto max-w-2xl">
-          <SectionHeading eyebrow="Apply Now" title="Submit Your Application" />
-          <div className="mt-14">
-            <CareerForm />
+        <Container className="grid gap-12 lg:grid-cols-12">
+          <div className="lg:col-span-4">
+            <SectionHeading eyebrow="Apply" title="Send us your application." description="Attach a resume and tell us, in your own words, what you'd like to work on." />
           </div>
+          <RevealOnScroll delay={0.1} className="lg:col-span-8">
+            <CareerForm />
+          </RevealOnScroll>
         </Container>
       </section>
     </>

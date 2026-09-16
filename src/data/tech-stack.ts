@@ -1,68 +1,82 @@
+// Only technologies we actually work in — drawn from the systems described on the Work page.
 export type TechCategory = {
   category: string;
   items: string[];
 };
 
 export const techStack: TechCategory[] = [
-  { category: "Frontend", items: ["React", "Next.js", "TypeScript", "Tailwind CSS", "Vue.js"] },
-  { category: "Backend", items: ["Node.js", "Python", ".NET", "Java", "GraphQL"] },
-  { category: "Mobile", items: ["React Native", "Flutter", "Swift", "Kotlin"] },
-  { category: "AI & Data", items: ["OpenAI", "Anthropic Claude", "LangChain", "PyTorch", "Pinecone"] },
-  { category: "Cloud & DevOps", items: ["AWS", "Microsoft Azure", "Google Cloud", "Docker", "Kubernetes", "Terraform"] },
-  { category: "Data", items: ["PostgreSQL", "MongoDB", "Redis", "Snowflake"] },
+  { category: "Languages", items: ["TypeScript", "Python", "SQL", "C# / .NET"] },
+  { category: "Frontend", items: ["React", "Next.js", "Tailwind CSS", "Framer Motion", "Three.js"] },
+  { category: "Backend & APIs", items: ["Node.js", "FastAPI", "Django", "REST", "Webhooks"] },
+  { category: "Data", items: ["PostgreSQL", "SQLite", "pandas", "pgvector"] },
+  { category: "AI", items: ["OpenAI", "Anthropic Claude", "LangChain", "RAG", "PyTorch", "scikit-learn"] },
+  { category: "Cloud & delivery", items: ["Vercel", "AWS", "Docker", "GitHub Actions", "Cloudflare"] },
+  { category: "Automation", items: ["n8n", "Zapier", "SMTP / IMAP integrations"] },
 ];
 
-export const processSteps = [
+export type ProcessStep = {
+  step: string;
+  title: string;
+  summary: string;
+  detail: string;
+  outputs: string[];
+};
+
+export const processSteps: ProcessStep[] = [
   {
     step: "01",
-    title: "Discover",
-    description: "We dive into your business goals, users, and constraints through structured discovery workshops.",
+    title: "Understand",
+    summary: "The work, not the software.",
+    detail:
+      "We start by learning who does what, where it breaks and what “better” would actually mean for the people doing it. No proposals before that.",
+    outputs: ["Written problem statement", "Scope and out-of-scope list", "Rough estimate and options"],
   },
   {
     step: "02",
-    title: "Design",
-    description: "Solution architecture and UX design get validated with stakeholders before a single line of code ships.",
+    title: "Architect",
+    summary: "Decide what to build, buy or leave alone.",
+    detail:
+      "We design the data model and integrations before any screens, and we say plainly when an existing tool or a simpler approach will do the job.",
+    outputs: ["Architecture and data model", "Integration map", "Delivery plan in stages"],
   },
   {
     step: "03",
-    title: "Develop",
-    description: "Agile sprints with weekly demos — you see progress continuously, not just at the end.",
+    title: "Build",
+    summary: "Working software every week.",
+    detail:
+      "Short cycles with real screens and real data you can click through on a shared staging environment, so you can change direction while it's still cheap.",
+    outputs: ["Weekly working increments", "Shared staging environment", "Decision log"],
   },
   {
     step: "04",
-    title: "Deploy",
-    description: "Rigorous QA, staged rollouts, and production deployment with zero-downtime releases.",
+    title: "Integrate",
+    summary: "Connect to what you already run.",
+    detail:
+      "Accounting, CRM, email, spreadsheets, third-party APIs: we wire the new system into the tools your team already uses, with error handling for when those tools misbehave.",
+    outputs: ["Live integrations", "Data sync and error handling", "Access and permissions"],
   },
   {
     step: "05",
-    title: "Support & Scale",
-    description: "Ongoing monitoring, iteration, and scaling support as your product and user base grow.",
-  },
-] as const;
-
-export const whyChooseUs = [
-  {
-    title: "End-to-End Delivery",
-    description: "We take products from first discovery call to production launch and beyond.",
+    title: "Test",
+    summary: "Automated where it counts, hands-on where it matters.",
+    detail:
+      "Automated tests for the logic, walkthroughs of the real workflow with the people who'll use it, and a security pass before anything goes live.",
+    outputs: ["Test suite", "Acceptance checklist", "Security review"],
   },
   {
-    title: "Dedicated AI Practice",
-    description: "A specialized team focused exclusively on AI integration, agents, and automation.",
+    step: "06",
+    title: "Launch",
+    summary: "Deploy with a way back.",
+    detail:
+      "Production deployment with monitoring, backups and a rollback path, plus documentation your team will actually read. Accounts and code are in your name.",
+    outputs: ["Production deployment", "Runbook and documentation", "Monitoring and alerts"],
   },
   {
-    title: "US + India Global Model",
-    description: "US-based account management with a scalable, cost-efficient India delivery team.",
+    step: "07",
+    title: "Improve",
+    summary: "Software meets reality after launch.",
+    detail:
+      "We watch how it's used, fix what's awkward, and keep improving it with you, as support or as the next stage of the build.",
+    outputs: ["Usage and error reviews", "Prioritized backlog", "Ongoing support"],
   },
-  {
-    title: "Transparent Engagement",
-    description: "Fixed-scope, time & materials, or dedicated team — clear pricing with no hidden costs.",
-  },
-  {
-    title: "Security & Compliance First",
-    description: "Secure SDLC practices applied to every engagement, regardless of size.",
-  },
-  {
-    title: "Long-Term Partnership",
-    description: "We build for the long run — ongoing partnerships and support, not one-off projects.",
-  },
-] as const;
+];
