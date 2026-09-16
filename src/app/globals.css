@@ -58,7 +58,9 @@
 /*
  * Palette: derived from the Coorbitz mark — deep navy through sky blue — on cool,
  * slightly warm-neutral surfaces. No purple anywhere. Text sits on off-white so white
- * cards read as a distinct layer without needing shadows everywhere.
+ * cards read as a distinct layer without needing shadows everywhere. Light theme only:
+ * the `dark` variant is kept defined (scoped to a `.dark` ancestor that never exists) so
+ * any `dark:` utilities left in shared UI components stay inert.
  */
 :root {
   --background: #f6f8fa;
@@ -107,48 +109,6 @@
   --sidebar-ring: #2a9bd8;
 }
 
-.dark {
-  --background: #08131f;
-  --foreground: #e6eef6;
-  --card: #0e1b2b;
-  --card-foreground: #e6eef6;
-  --popover: #0e1b2b;
-  --popover-foreground: #e6eef6;
-  --primary: #4fb3e8;
-  --primary-foreground: #061423;
-  --secondary: #16283a;
-  --secondary-foreground: #cfe4f5;
-  --muted: #101e2f;
-  --muted-foreground: #97a9bb;
-  --accent: #12283b;
-  --accent-foreground: #cfe4f5;
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: color-mix(in oklab, #e6eef6 12%, transparent);
-  --input: color-mix(in oklab, #e6eef6 16%, transparent);
-  --ring: #4fb3e8;
-  --chart-1: #4fb3e8;
-  --chart-2: #7fd6f7;
-  --chart-3: #2a85cf;
-  --chart-4: #97a9bb;
-  --chart-5: #e6eef6;
-  --brand-navy: #1e5a96;
-  --brand-blue: #2a85cf;
-  --brand-sky: #4fb3e8;
-  --brand-ice: #7fd6f7;
-  --mark-1: #4fb3e8;
-  --mark-2: #7fd6f7;
-  --mark-3: #a9e4fa;
-  --mark-4: #2a85cf;
-  --mark-5: #3aa0de;
-  --sidebar: #0e1b2b;
-  --sidebar-foreground: #e6eef6;
-  --sidebar-primary: #4fb3e8;
-  --sidebar-primary-foreground: #061423;
-  --sidebar-accent: #101e2f;
-  --sidebar-accent-foreground: #e6eef6;
-  --sidebar-border: color-mix(in oklab, #e6eef6 12%, transparent);
-  --sidebar-ring: #4fb3e8;
-}
 
 @layer base {
   * {

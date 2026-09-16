@@ -10,7 +10,6 @@ import * as THREE from "three";
 // the geometry plus one for the faint wireframe shell.
 
 type Props = {
-  dark: boolean;
   active: boolean;
   onReady?: () => void;
 };
@@ -59,29 +58,18 @@ function buildGraph() {
   return { nodes, edges };
 }
 
-const palettes = {
-  light: {
-    hub: "#0b3f75",
-    satellite: ["#1e78be", "#2a9bd8", "#1567a8"],
-    line: "#0b3f75",
-    lineOpacity: 0.22,
-    pulse: "#53c6f2",
-    shell: "#0b3f75",
-    shellOpacity: 0.06,
-  },
-  dark: {
-    hub: "#a9e4fa",
-    satellite: ["#4fb3e8", "#7fd6f7", "#3aa0de"],
-    line: "#4fb3e8",
-    lineOpacity: 0.3,
-    pulse: "#ffffff",
-    shell: "#7fd6f7",
-    shellOpacity: 0.07,
-  },
+// Light-theme palette (the site ships a single light theme).
+const palette = {
+  hub: "#0b3f75",
+  satellite: ["#1e78be", "#2a9bd8", "#1567a8"],
+  line: "#0b3f75",
+  lineOpacity: 0.22,
+  pulse: "#53c6f2",
+  shell: "#0b3f75",
+  shellOpacity: 0.06,
 };
 
-function Network({ dark, active }: { dark: boolean; active: boolean }) {
-  const palette = dark ? palettes.dark : palettes.light;
+function Network({ active }: { active: boolean }) {
   const group = useRef<THREE.Group>(null);
   const shell = useRef<THREE.Mesh>(null);
   const hubMesh = useRef<THREE.InstancedMesh>(null);
@@ -133,7 +121,7 @@ function Network({ dark, active }: { dark: boolean; active: boolean }) {
       satelliteMesh.current.instanceMatrix.needsUpdate = true;
       if (satelliteMesh.current.instanceColor) satelliteMesh.current.instanceColor.needsUpdate = true;
     }
-  }, [nodes, palette, scratch]);
+  }, [nodes, scratch]);
 
   useFrame((state, delta) => {
     if (!active) return;
@@ -200,7 +188,7 @@ function Network({ dark, active }: { dark: boolean; active: boolean }) {
   );
 }
 
-export default function HeroScene({ dark, active, onReady }: Props) {
+export default function HeroScene({ active, onReady }: Props) {
   return (
     <Canvas
       dpr={[1, 1.5]}
@@ -210,10 +198,10 @@ export default function HeroScene({ dark, active, onReady }: Props) {
       onCreated={() => onReady?.()}
       style={{ background: "transparent" }}
     >
-      <ambientLight intensity={dark ? 0.9 : 1.1} />
-      <directionalLight position={[3, 4, 5]} intensity={dark ? 1.1 : 1.3} />
-      <pointLight position={[-4, -2, 3]} intensity={dark ? 0.8 : 0.5} color={dark ? "#7fd6f7" : "#2a9bd8"} />
-      <Network dark={dark} active={active} />
+      <ambientLight intensity={1.1} />
+      <directionalLight position={[3, 4, 5]} intensity={1.3} />
+      <pointLight position={[-4, -2, 3]} intensity={0.5} color="#2a9bd8" />
+      <Network active={active} />
     </Canvas>
   );
 }

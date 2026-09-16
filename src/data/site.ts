@@ -24,7 +24,7 @@ export const siteConfig = {
   },
   phone: {
     us: "+1 (872) 258-2235",
-    india: "+91 79905 12345",
+    india: "+91 82006 88817",
   },
   // Coorbitz is the dedicated IT Services & AI Solutions brand operating under Coordinatez.
   parentCompany: {
@@ -38,9 +38,10 @@ export const siteConfig = {
       label: "Headquarters",
       company: "Coordinatez",
       city: "Chicago, Illinois",
-      country: "United States",
-      addressLines: ["71 S Wacker Dr, Suite 2400", "Chicago, IL 60606, USA"],
-      mapsUrl: "https://www.google.com/maps/search/?api=1&query=71+S+Wacker+Dr+Suite+2400+Chicago+IL+60606",
+      country: "USA",
+      // City-level only by design — no street address is published.
+      addressLines: [] as string[],
+      mapsUrl: "https://www.google.com/maps/search/?api=1&query=Chicago+Illinois+USA",
     },
     development: {
       label: "Engineering",
@@ -48,8 +49,8 @@ export const siteConfig = {
       divisionName: "Software & AI engineering",
       city: "Mehsana, Gujarat",
       country: "India",
-      addressLines: ["3rd Floor, Orbit Business Hub", "Mehsana, Gujarat 384002, India"],
-      mapsUrl: "https://www.google.com/maps/search/?api=1&query=Orbit+Business+Hub+Mehsana+Gujarat+384002",
+      addressLines: [] as string[],
+      mapsUrl: "https://www.google.com/maps/search/?api=1&query=Mehsana+Gujarat+India",
     },
   },
   businessHours: [

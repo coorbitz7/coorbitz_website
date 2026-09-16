@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import { useReducedMotion } from "framer-motion";
-import { useTheme } from "next-themes";
 import { SystemFallback } from "@/components/sections/system-fallback";
 import { cn } from "@/lib/utils";
 
@@ -27,7 +26,6 @@ function supportsWebGL() {
 export function HeroVisual({ className }: { className?: string }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const prefersReducedMotion = useReducedMotion();
-  const { resolvedTheme } = useTheme();
   const [use3d, setUse3d] = useState(false);
   const [sceneReady, setSceneReady] = useState(false);
   const [inView, setInView] = useState(true);
@@ -65,7 +63,7 @@ export function HeroVisual({ className }: { className?: string }) {
       />
       {use3d && (
         <div className={cn("absolute inset-0 transition-opacity duration-700", sceneReady ? "opacity-100" : "opacity-0")}>
-          <HeroScene dark={resolvedTheme === "dark"} active={inView} onReady={() => setSceneReady(true)} />
+          <HeroScene active={inView} onReady={() => setSceneReady(true)} />
         </div>
       )}
     </div>

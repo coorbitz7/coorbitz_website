@@ -1,7 +1,6 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Roboto_Slab, IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider } from "@/components/layout/theme-provider";
 import { MotionProvider } from "@/components/layout/motion-provider";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/sonner";
@@ -54,6 +53,12 @@ export const metadata: Metadata = {
   },
 };
 
+// Single light theme by design: no toggle, and the browser is told not to darken form controls.
+export const viewport: Viewport = {
+  colorScheme: "light",
+  themeColor: "#f6f8fa",
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -63,32 +68,29 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${headingFont.variable} ${bodyFont.variable} ${monoFont.variable} h-full antialiased`}
-      suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col">
         <JsonLd data={[organizationJsonLd(), websiteJsonLd(), ...localBusinessJsonLd()]} />
         <AnalyticsScripts />
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-          <MotionProvider>
-            <TooltipProvider delayDuration={150}>
-              <a
-                href="#main"
-                className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-md focus:bg-primary focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-primary-foreground"
-              >
-                Skip to content
-              </a>
-              <Navbar />
-              <main id="main" className="flex-1">
-                {children}
-              </main>
-              <Footer />
-              <BackToTop />
-              <WhatsAppButton />
-              <CookieConsent />
-              <Toaster position="bottom-right" richColors />
-            </TooltipProvider>
-          </MotionProvider>
-        </ThemeProvider>
+        <MotionProvider>
+          <TooltipProvider delayDuration={150}>
+            <a
+              href="#main"
+              className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-md focus:bg-primary focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-primary-foreground"
+            >
+              Skip to content
+            </a>
+            <Navbar />
+            <main id="main" className="flex-1">
+              {children}
+            </main>
+            <Footer />
+            <BackToTop />
+            <WhatsAppButton />
+            <CookieConsent />
+            <Toaster position="bottom-right" richColors />
+          </TooltipProvider>
+        </MotionProvider>
       </body>
     </html>
   );

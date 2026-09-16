@@ -208,7 +208,7 @@ export function localBusinessJsonLd() {
     name: `${siteConfig.name} — ${location.label}`,
     address: {
       "@type": "PostalAddress",
-      streetAddress: location.addressLines[0],
+      ...(location.addressLines[0] ? { streetAddress: location.addressLines[0] } : {}),
       addressLocality: location.city,
       addressCountry: location.country,
     },

@@ -16,7 +16,6 @@ import {
 } from "@/components/ui/sheet";
 import { Container } from "@/components/shared/container";
 import { Logo } from "@/components/shared/logo";
-import { ThemeToggle } from "@/components/layout/theme-toggle";
 import { SearchDialog } from "@/components/layout/search-dialog";
 import { mainNav, primaryCta } from "@/data/nav";
 import { siteConfig } from "@/data/site";
@@ -83,7 +82,6 @@ export function Navbar() {
 
         <div className="flex items-center gap-1">
           <SearchDialog />
-          <ThemeToggle />
           <Button asChild className="ml-2 hidden h-9 px-4 lg:inline-flex">
             <Link href={primaryCta.href}>
               {primaryCta.label} <ArrowRight className="size-4" />

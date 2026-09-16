@@ -20,7 +20,7 @@ built with Next.js App Router, TypeScript, Tailwind CSS, shadcn/ui, and Framer M
   [`docs/seo-audit.md`](docs/seo-audit.md).
 - Optional, env-gated analytics integrations (GA4, GTM, Clarity, Meta Pixel, LinkedIn) that add
   zero cost until configured.
-- Light/dark themes, WCAG-minded contrast and keyboard support, `prefers-reduced-motion`
+- Single light theme, WCAG-minded contrast and keyboard support, `prefers-reduced-motion`
   honored by every animation.
 - Docker and CI (GitHub Actions) support.
 
@@ -35,7 +35,6 @@ built with Next.js App Router, TypeScript, Tailwind CSS, shadcn/ui, and Framer M
 - **3D**: three.js + React Three Fiber, loaded only on desktop as a separate client chunk
 - **Forms**: react-hook-form + Zod validation
 - **Email**: Formspree (Contact form) + Nodemailer/SMTP (Careers form & newsletter signups)
-- **Theming**: next-themes (light/dark, system default)
 - **Icons**: lucide-react
 
 ## Project Structure

@@ -2,6 +2,16 @@
 
 All notable changes to this project are documented in this file.
 
+## [1.1.1] — 2026-09-16
+
+### Changed
+
+- Single light theme: removed the dark theme, theme toggle and `next-themes`; the page
+  declares `color-scheme: light` so browsers don't darken form controls.
+- Office addresses are now city-level only (Chicago, Illinois, USA and Mehsana, Gujarat,
+  India); the placeholder street addresses were removed from the site and structured data.
+- India contact number updated to +91 82006 88817.
+
 ## [1.1.0] — 2026-09-16
 
 Design and content overhaul: make the site read as a real engineering company, not a template.
